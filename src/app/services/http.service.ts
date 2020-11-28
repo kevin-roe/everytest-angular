@@ -18,6 +18,10 @@ export class HttpService {
     return this.httpClient.post<T>(this.REST_API_SERVER + path, request, { withCredentials: true });
   }
 
+  public put<T>(path: string, request: any) {
+    return this.httpClient.put<T>(this.REST_API_SERVER + path, request, { withCredentials: true });
+  }
+
   public delete<T>(path: string) {
     return this.httpClient.delete<T>(this.REST_API_SERVER + path, { withCredentials: true });
   }

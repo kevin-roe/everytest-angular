@@ -15,6 +15,9 @@ import { AboutComponent } from './components/about/about.component';
 import { SidebarComponent } from './components/layouts/sidebar/sidebar.component';
 import { TopbarComponent } from './components/layouts/topbar/topbar.component';
 import { RegisterComponent } from './components/register/register.component';
+import { OrganizationSettingsComponent } from './components/organization/organization-settings/organization-settings.component';
+import { ProductsComponent } from './components/organization/products/products.component';
+import { PlatformsComponent } from './components/organization/platforms/platforms.component';
 
 
 @NgModule({
@@ -26,7 +29,10 @@ import { RegisterComponent } from './components/register/register.component';
     AboutComponent,
     SidebarComponent,
     TopbarComponent,
-    RegisterComponent
+    RegisterComponent,
+    OrganizationSettingsComponent,
+    ProductsComponent,
+    PlatformsComponent
   ],
   imports: [
     BrowserModule,
