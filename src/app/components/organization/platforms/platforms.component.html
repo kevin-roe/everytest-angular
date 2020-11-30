@@ -3,13 +3,103 @@
         <h6 class="m-0 font-weight-bold text-primary">Edit Platforms</h6>
     </div>
     <div class="card-body p-5">
-        <form class="user">
-            <div class="form-group">
-                <input type="text" class="form-control form-control-user">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="platforms-table" width="100%" cellspacing="0">
+                <colgroup>
+                    <col span="1" style="width: 80%;">
+                    <col span="1" style="width: 10%;">
+                    <col span="1" style="width: 10%;">
+                 </colgroup>
+                <tbody>
+                    <tr>
+                        <td>Platform Name</td>
+                        <td>Edit</td>
+                        <td>Delete</td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr *ngFor="let platform of platforms">
+                        <td>{{platform.name}}</td>
+                        <td class="text-center">
+                            <a (click)="setPlatform(platform, true)" href="#" data-toggle="modal" data-target="#editPlatformModal"><i class="fas fa-edit"></i></a>
+                        </td>
+                        <td class="text-center">
+                            <a (click)="setPlatform(platform, false)" href="#" data-toggle="modal" data-target="#deletePlatformModal"><i class="fas fa-trash-alt"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <a class="btn btn-primary float-right" (click)="setPlatform(platform, false)" href="#" data-toggle="modal" data-target="#addPlatformModal">
+            Add New Platform
+        </a>
+    </div>
+</div>
+
+<div class="modal fade" id="editPlatformModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Platform: {{platform?.name}}</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
             </div>
-            <button type="submit" class="btn btn-primary btn-user">
-                Platforms
-            </button>
-        </form>
+            <div class="modal-body">
+                <form id="platform-edit-form" [formGroup]="editPlatformForm" (ngSubmit)="onEditSubmit()">
+                    <div class="form-group">
+                        <input type="text" class="form-control" formControlName="editField">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" type="submit" form="platform-edit-form">Edit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deletePlatformModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete Platform: {{platform?.name}}</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this platform?
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-danger" (click)="onDeleteSubmit()">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addPlatformModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add a New Platform</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="add-platform-form" [formGroup]="addPlatformForm" (ngSubmit)="onAddSubmit()">
+                    <div class="form-group">
+                        <input type="text" class="form-control" formControlName="addField">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" type="submit" form="add-platform-form">Add</button>
+            </div>
+        </div>
     </div>
 </div>
