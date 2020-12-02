@@ -4,6 +4,7 @@ import { Product } from 'src/app/models/product.model';
 import { ProductRequest } from 'src/app/requests/product.request';
 import { AuthService } from 'src/app/services/auth.service';
 import { HttpService } from 'src/app/services/http.service';
+import { TestPlanServiceService } from 'src/app/services/test-plan-service.service';
 declare var $: any;
 
 @Component({
@@ -12,12 +13,11 @@ declare var $: any;
   styleUrls: ['./products.component.css']
 })
 export class ProductsComponent implements OnInit {
-  @Input() products: Product[]
   product: Product
   editProductForm: FormGroup;
   addProductForm: FormGroup;
 
-  constructor(private authService: AuthService, private http: HttpService) { }
+  constructor(private authService: AuthService, private http: HttpService, public testPlanService: TestPlanServiceService) { }
 
   ngOnInit(): void {
     this.initForms()
@@ -45,7 +45,7 @@ export class ProductsComponent implements OnInit {
     }
     this.http.put<Product>(`products/${this.authService.user$.organization.id}/${this.product.id}`, req).subscribe(
       data => {
-        this.products.find(p => p.id === data.id).name = data.name;
+        this.testPlanService.products.find(p => p.id === data.id).name = data.name;
         $("#editProductModal").modal('hide');
       }, () => {
         alert("Error! (Need to handle these better...)") //TODO: Handle errors
@@ -56,7 +56,7 @@ export class ProductsComponent implements OnInit {
   onDeleteSubmit() {
     this.http.delete(`products/${this.authService.user$.organization.id}/${this.product.id}`).subscribe(
       () => {
-        this.products = this.products.filter(p => p.id != this.product.id);
+        this.testPlanService.products = this.testPlanService.products.filter(p => p.id != this.product.id);
         this.product = null; // Just in case
         $("#deleteProductModal").modal('hide');
       }, () => {
@@ -71,7 +71,8 @@ export class ProductsComponent implements OnInit {
     }
     this.http.post<Product>(`products/${this.authService.user$.organization.id}`, req).subscribe(
       data => {
-        this.products.push(data)
+        this.testPlanService.products.push(data)
+        this.addProductForm.reset();
         $("#addProductModal").modal('hide');
       }, () => {
         alert("Error! (Need to handle these better...)") //TODO: Handle errors

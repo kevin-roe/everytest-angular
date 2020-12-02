@@ -1,9 +1,9 @@
-<body *ngIf="public_routes.indexOf(router.url) == -1; else publicRoute">
+<body *ngIf="public_routes.indexOf(router.url) == -1; else publicRoute" id="page-top">
     <div id="wrapper">
-        <sidebar *ngIf="authService.user$"></sidebar>
+        <sidebar></sidebar>
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
-                <topbar *ngIf="authService.user$"></topbar>
+                <topbar></topbar>
                 <div class="container-fluid">
                     <router-outlet></router-outlet>
                 </div>

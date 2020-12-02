@@ -18,17 +18,10 @@ export class OrganizationSettingsComponent implements OnInit {
   products: Product[];
   platforms: Platform[];
 
-  constructor(
-    private authService: AuthService,
-    private http: HttpService,
-    private activatedRoute: ActivatedRoute) { }
+  constructor(private authService: AuthService, private http: HttpService) { }
 
   ngOnInit() {
     this.initForm();
-    
-    // For sending data to child components 
-    this.products = this.activatedRoute.snapshot.data['products']
-    this.platforms = this.activatedRoute.snapshot.data['platforms']
   }
 
   onSubmit() {

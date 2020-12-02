@@ -18,7 +18,7 @@
                     </tr>
                 </tbody>
                 <tbody>
-                    <tr *ngFor="let platform of platforms">
+                    <tr *ngFor="let platform of testPlanService.platforms">
                         <td>{{platform.name}}</td>
                         <td class="text-center">
                             <a (click)="setPlatform(platform, true)" href="#" data-toggle="modal" data-target="#editPlatformModal"><i class="fas fa-edit"></i></a>

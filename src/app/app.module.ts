@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 // Declarations
 import { AppComponent } from './app.component';
@@ -18,6 +19,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { OrganizationSettingsComponent } from './components/organization/organization-settings/organization-settings.component';
 import { ProductsComponent } from './components/organization/products/products.component';
 import { PlatformsComponent } from './components/organization/platforms/platforms.component';
+import { TestPlanComponent } from './components/test-plan/test-plan.component';
 
 
 @NgModule({
@@ -32,7 +34,8 @@ import { PlatformsComponent } from './components/organization/platforms/platform
     RegisterComponent,
     OrganizationSettingsComponent,
     ProductsComponent,
-    PlatformsComponent
+    PlatformsComponent,
+    TestPlanComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +44,7 @@ import { PlatformsComponent } from './components/organization/platforms/platform
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

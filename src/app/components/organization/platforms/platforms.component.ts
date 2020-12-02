@@ -4,6 +4,7 @@ import { Platform } from 'src/app/models/platform.model';
 import { PlatformRequest } from 'src/app/requests/platform.request';
 import { AuthService } from 'src/app/services/auth.service';
 import { HttpService } from 'src/app/services/http.service';
+import { TestPlanServiceService } from 'src/app/services/test-plan-service.service';
 declare var $: any;
 
 @Component({
@@ -12,12 +13,11 @@ declare var $: any;
   styleUrls: ['./platforms.component.css']
 })
 export class PlatformsComponent implements OnInit {
-  @Input() platforms: Platform[]
   platform: Platform
   editPlatformForm: FormGroup;
   addPlatformForm: FormGroup;
 
-  constructor(private authService: AuthService, private http: HttpService) { }
+  constructor(private authService: AuthService, private http: HttpService, public testPlanService: TestPlanServiceService) { }
 
   ngOnInit(): void {
     this.initForms()
@@ -45,7 +45,8 @@ export class PlatformsComponent implements OnInit {
     }
     this.http.put<Platform>(`platforms/${this.authService.user$.organization.id}/${this.platform.id}`, req).subscribe(
       data => {
-        this.platforms.find(p => p.id === data.id).name = data.name;
+        this.testPlanService.platforms.find(p => p.id === data.id).name = data.name;
+        this.testPlanService.updateSideNavMenu();
         $("#editPlatformModal").modal('hide');
       }, () => {
         alert("Error! (Need to handle these better...)") //TODO: Handle errors
@@ -56,7 +57,7 @@ export class PlatformsComponent implements OnInit {
   onDeleteSubmit() {
     this.http.delete(`platforms/${this.authService.user$.organization.id}/${this.platform.id}`).subscribe(
       () => {
-        this.platforms = this.platforms.filter(p => p.id != this.platform.id);
+        this.testPlanService.platforms = this.testPlanService.platforms.filter(p => p.id != this.platform.id);
         this.platform = null; // Just in case
         $("#deletePlatformModal").modal('hide');
       }, () => {
@@ -71,7 +72,8 @@ export class PlatformsComponent implements OnInit {
     }
     this.http.post<Platform>(`platforms/${this.authService.user$.organization.id}`, req).subscribe(
       data => {
-        this.platforms.push(data)
+        this.testPlanService.platforms.push(data)
+        this.addPlatformForm.reset();
         $("#addPlatformModal").modal('hide');
       }, () => {
         alert("Error! (Need to handle these better...)") //TODO: Handle errors

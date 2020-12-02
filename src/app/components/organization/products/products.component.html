@@ -18,7 +18,7 @@
                     </tr>
                 </tbody>
                 <tbody>
-                    <tr *ngFor="let product of products">
+                    <tr *ngFor="let product of testPlanService.products">
                         <td>{{product.name}}</td>
                         <td class="text-center">
                             <a (click)="setProduct(product, true)" href="#" data-toggle="modal" data-target="#editProductModal"><i class="fas fa-edit"></i></a>
@@ -92,7 +92,7 @@
             <div class="modal-body">
                 <form id="add-product-form" [formGroup]="addProductForm" (ngSubmit)="onAddSubmit()">
                     <div class="form-group">
-                        <input type="text" class="form-control" formControlName="addField">
+                        <input type="text" id="addField" class="form-control" formControlName="addField">
                     </div>
                 </form>
             </div>
