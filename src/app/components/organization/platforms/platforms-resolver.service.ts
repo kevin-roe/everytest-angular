@@ -10,9 +10,9 @@ import { HttpService } from 'src/app/services/http.service';
 })
 export class PlatformsResolverService implements Resolve<Platform[]>{
 
-  constructor(private authService: AuthService, private http: HttpService) { }
+  constructor(private http: HttpService) { }
 
   resolve(): Observable<Platform[]> {
-    return this.http.get<Platform[]>(`platforms/${this.authService.user$.organization.id}`)
+    return this.http.get<Platform[]>(`platforms`)
   }
 }

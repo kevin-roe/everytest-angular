@@ -4,7 +4,7 @@ import { Platform } from 'src/app/models/platform.model';
 import { PlatformRequest } from 'src/app/requests/platform.request';
 import { AuthService } from 'src/app/services/auth.service';
 import { HttpService } from 'src/app/services/http.service';
-import { TestPlanServiceService } from 'src/app/services/test-plan-service.service';
+import { TestPlanService } from 'src/app/services/test-plan.service';
 declare var $: any;
 
 @Component({
@@ -17,7 +17,7 @@ export class PlatformsComponent implements OnInit {
   editPlatformForm: FormGroup;
   addPlatformForm: FormGroup;
 
-  constructor(private authService: AuthService, private http: HttpService, public testPlanService: TestPlanServiceService) { }
+  constructor(private http: HttpService, public testPlanService: TestPlanService) { }
 
   ngOnInit(): void {
     this.initForms()
@@ -43,7 +43,7 @@ export class PlatformsComponent implements OnInit {
     let req: PlatformRequest = {
       name: this.editPlatformForm.value.editField,
     }
-    this.http.put<Platform>(`platforms/${this.authService.user$.organization.id}/${this.platform.id}`, req).subscribe(
+    this.http.put<Platform>(`platforms/${this.platform.id}`, req).subscribe(
       data => {
         this.testPlanService.platforms.find(p => p.id === data.id).name = data.name;
         this.testPlanService.updateSideNavMenu();
@@ -55,7 +55,7 @@ export class PlatformsComponent implements OnInit {
   }
 
   onDeleteSubmit() {
-    this.http.delete(`platforms/${this.authService.user$.organization.id}/${this.platform.id}`).subscribe(
+    this.http.delete(`platforms/${this.platform.id}`).subscribe(
       () => {
         this.testPlanService.platforms = this.testPlanService.platforms.filter(p => p.id != this.platform.id);
         this.platform = null; // Just in case
@@ -70,7 +70,7 @@ export class PlatformsComponent implements OnInit {
     let req: PlatformRequest = {
       name: this.addPlatformForm.value.addField,
     }
-    this.http.post<Platform>(`platforms/${this.authService.user$.organization.id}`, req).subscribe(
+    this.http.post<Platform>(`platforms`, req).subscribe(
       data => {
         this.testPlanService.platforms.push(data)
         this.addPlatformForm.reset();

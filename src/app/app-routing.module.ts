@@ -23,7 +23,7 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]  },
   { path: 'about', component: AboutComponent, canActivate: [AuthGuard] },
   { path: 'organization', component: OrganizationSettingsComponent, canActivate: [AuthGuard] },
-  { path: 'testplans/:id', component: TestPlanComponent, canActivate: [AuthGuard], resolve: {plan: TestPlanResolverService} }
+  { path: 'test_plans/:id', component: TestPlanComponent, canActivate: [AuthGuard], resolve: {data: TestPlanResolverService} }
   
 ];
 

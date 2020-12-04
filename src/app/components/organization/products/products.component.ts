@@ -4,7 +4,7 @@ import { Product } from 'src/app/models/product.model';
 import { ProductRequest } from 'src/app/requests/product.request';
 import { AuthService } from 'src/app/services/auth.service';
 import { HttpService } from 'src/app/services/http.service';
-import { TestPlanServiceService } from 'src/app/services/test-plan-service.service';
+import { TestPlanService } from 'src/app/services/test-plan.service';
 declare var $: any;
 
 @Component({
@@ -17,7 +17,7 @@ export class ProductsComponent implements OnInit {
   editProductForm: FormGroup;
   addProductForm: FormGroup;
 
-  constructor(private authService: AuthService, private http: HttpService, public testPlanService: TestPlanServiceService) { }
+  constructor(private http: HttpService, public testPlanService: TestPlanService) { }
 
   ngOnInit(): void {
     this.initForms()
@@ -43,7 +43,7 @@ export class ProductsComponent implements OnInit {
     let req: ProductRequest = {
       name: this.editProductForm.value.editField,
     }
-    this.http.put<Product>(`products/${this.authService.user$.organization.id}/${this.product.id}`, req).subscribe(
+    this.http.put<Product>(`products/${this.product.id}`, req).subscribe(
       data => {
         this.testPlanService.products.find(p => p.id === data.id).name = data.name;
         $("#editProductModal").modal('hide');
@@ -54,7 +54,7 @@ export class ProductsComponent implements OnInit {
   }
 
   onDeleteSubmit() {
-    this.http.delete(`products/${this.authService.user$.organization.id}/${this.product.id}`).subscribe(
+    this.http.delete(`products/${this.product.id}`).subscribe(
       () => {
         this.testPlanService.products = this.testPlanService.products.filter(p => p.id != this.product.id);
         this.product = null; // Just in case
@@ -69,7 +69,7 @@ export class ProductsComponent implements OnInit {
     let req: ProductRequest = {
       name: this.addProductForm.value.addField,
     }
-    this.http.post<Product>(`products/${this.authService.user$.organization.id}`, req).subscribe(
+    this.http.post<Product>(`products`, req).subscribe(
       data => {
         this.testPlanService.products.push(data)
         this.addProductForm.reset();

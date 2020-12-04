@@ -28,7 +28,7 @@ export class OrganizationSettingsComponent implements OnInit {
     let req: EditOrganizationRequest = {
       name: this.organizationForm.value.name,
     }
-    this.http.put<Organization>(`organizations/${this.authService.user$.organization.id}`, req).subscribe(
+    this.http.put<Organization>(`organizations`, req).subscribe(
       res => {
         console.log("Success! ", res)
         this.authService.user$.organization.name = res.name

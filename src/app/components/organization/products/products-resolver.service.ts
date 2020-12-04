@@ -10,9 +10,9 @@ import { HttpService } from 'src/app/services/http.service';
 })
 export class ProductsResolverService implements Resolve<Product[]>{
 
-  constructor(private authService: AuthService, private http: HttpService) { }
+  constructor(private http: HttpService) { }
 
   resolve(): Observable<Product[]> {
-    return this.http.get<Product[]>(`products/${this.authService.user$.organization.id}`)
+    return this.http.get<Product[]>(`products`)
   }
 }

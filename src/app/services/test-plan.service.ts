@@ -10,13 +10,13 @@ import { HttpService } from './http.service';
 @Injectable({
   providedIn: 'root'
 })
-export class TestPlanServiceService {
+export class TestPlanService {
   public products: Product[];
   public platforms: Platform[];
   public test_plans: TestPlan[];
   public formatted_test_plans: TestPlanFormatted[]; 
 
-  constructor(private authService: AuthService, private http: HttpService) { 
+  constructor(private http: HttpService) { 
     this.buildSideNavMenuFromDatabase()
   }
 
@@ -30,36 +30,36 @@ export class TestPlanServiceService {
 
   addToFormattedTestPlans(plan: TestPlan) {
     // Does the product for this plan already exist in the formatted plans
-    let notAddedYet = this.formatted_test_plans.find(x => x.product_id == plan.product_id) == null
+    let notAddedYet = this.formatted_test_plans.find(x => x.product_id == plan.product.id) == null
 
     // if it's not already added, then add it now. 
     if (notAddedYet) {
       // First, get the name of he product
-      let product_name = this.getProductName(plan.product_id)
+      let product_name = this.getProductName(plan.product.id)
       // Then, get the name of he platform
-      let platform_name = this.getPlatformName(plan.platform_id)
+      let platform_name = this.getPlatformName(plan.platform.id)
       // Then push a new object
-      let obj: TestPlanFormatted = { product_name: product_name, product_id: plan.product_id, test_plans: [{platform_name: platform_name, platform_id: plan.platform_id, test_plan_id: plan.id}] } 
+      let obj: TestPlanFormatted = { product_name: product_name, product_id: plan.product.id, test_plans: [{platform_name: platform_name, platform_id: plan.platform.id, test_plan_id: plan.id}] } 
       this.formatted_test_plans.push(obj)
     
     // If the product has already beed added
     } else {
       // Get the platform name 
-      let platform_name = this.getPlatformName(plan.platform_id)
+      let platform_name = this.getPlatformName(plan.platform.id)
       // Push a new object
-      this.formatted_test_plans.find(x => x.product_id == plan.product_id).test_plans.push({platform_name: platform_name, platform_id: plan.platform_id, test_plan_id: plan.id})
+      this.formatted_test_plans.find(x => x.product_id == plan.product.id).test_plans.push({platform_name: platform_name, platform_id: plan.platform.id, test_plan_id: plan.id})
     }
   }
 
   public buildSideNavMenuFromDatabase() {
-    let products = this.http.get<Product[]>(`products/${this.authService.user$.organization.id}`);
-    let platforms = this.http.get<Platform[]>(`platforms/${this.authService.user$.organization.id}`);
+    let products = this.http.get<Product[]>(`products`);
+    let platforms = this.http.get<Platform[]>(`platforms`);
 
     forkJoin([products, platforms]).subscribe(results => {
       this.products = results[0];
       this.platforms = results[1];
 
-      this.http.get<TestPlan[]>(`testplans/${this.authService.user$.organization.id}`).subscribe(plans => {
+      this.http.get<TestPlan[]>(`test_plans`).subscribe(plans => {
         this.test_plans = plans
         this.formatted_test_plans = []
         this.test_plans.forEach(plan => {

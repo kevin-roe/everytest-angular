@@ -10,9 +10,9 @@ import { HttpService } from 'src/app/services/http.service';
 })
 export class TestPlanResolverService implements Resolve<TestPlan> {
 
-  constructor(private authService: AuthService, private http: HttpService) { }
+  constructor(private http: HttpService) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<TestPlan> {
-    return this.http.get<TestPlan>(`testplans/1/${route.paramMap.get('id')}`)
+    return this.http.get<TestPlan>(`test_plans/${route.paramMap.get('id')}`)
   }
 }

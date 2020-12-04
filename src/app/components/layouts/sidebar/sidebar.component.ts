@@ -8,7 +8,7 @@ import { TestPlan } from 'src/app/models/test-plan.model';
 import { TestPlanRequest } from 'src/app/requests/new-test-plan.request';
 import { AuthService } from 'src/app/services/auth.service';
 import { HttpService } from 'src/app/services/http.service';
-import { TestPlanServiceService } from 'src/app/services/test-plan-service.service';
+import { TestPlanService } from 'src/app/services/test-plan.service';
 declare var $: any;
 
 @Component({
@@ -19,7 +19,7 @@ declare var $: any;
 export class SidebarComponent implements OnInit {
   addTestPlanForm: FormGroup;
 
-  constructor(private authService: AuthService, private http: HttpService, public testPlanService: TestPlanServiceService) { }
+  constructor(private http: HttpService, public testPlanService: TestPlanService) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -37,7 +37,7 @@ export class SidebarComponent implements OnInit {
       product_id: this.addTestPlanForm.get("product").value,
       platform_id: this.addTestPlanForm.get("platform").value
     }
-    this.http.post<TestPlan>(`testplans/${this.authService.user$.organization.id}`, req).subscribe(
+    this.http.post<TestPlan>(`test_plans`, req).subscribe(
       data => {
         this.testPlanService.addToFormattedTestPlans(data)
         $("#addTestPlanModal").modal('hide');
