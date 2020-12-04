@@ -23,7 +23,7 @@
                         <input type="text" class="form-control"
                         formControlName="name">
                     </div>
-                    <button type="submit" class="btn btn-primary float-right">
+                    <button type="submit" class="btn btn-primary float-right" [disabled]="!organizationForm.dirty">
                         Edit Name
                     </button>
                 </form>
