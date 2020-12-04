@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Platform } from 'src/app/models/platform.model';
 import { PlatformRequest } from 'src/app/requests/platform.request';
-import { AuthService } from 'src/app/services/auth.service';
 import { HttpService } from 'src/app/services/http.service';
 import { TestPlanService } from 'src/app/services/test-plan.service';
 declare var $: any;

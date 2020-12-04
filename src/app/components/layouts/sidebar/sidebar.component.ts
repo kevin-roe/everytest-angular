@@ -1,12 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { forkJoin } from 'rxjs';
-import { Platform } from 'src/app/models/platform.model';
-import { Product } from 'src/app/models/product.model';
-import { TestPlanFormatted } from 'src/app/models/test-plan-formatted.model';
 import { TestPlan } from 'src/app/models/test-plan.model';
 import { TestPlanRequest } from 'src/app/requests/new-test-plan.request';
-import { AuthService } from 'src/app/services/auth.service';
 import { HttpService } from 'src/app/services/http.service';
 import { TestPlanService } from 'src/app/services/test-plan.service';
 declare var $: any;
@@ -40,6 +35,7 @@ export class SidebarComponent implements OnInit {
     this.http.post<TestPlan>(`test_plans`, req).subscribe(
       data => {
         this.testPlanService.addToFormattedTestPlans(data)
+        this.addTestPlanForm.reset()
         $("#addTestPlanModal").modal('hide');
       }, () => {
         alert("Error!") // TODO: Handle this better
@@ -53,6 +49,10 @@ export class SidebarComponent implements OnInit {
     if ($(".sidebar").hasClass("toggled")) {
       $('.sidebar .collapse').collapse('hide');
     };
+  }
+
+  toggleSidebarMenuCollapse() {
+    $('.sidebar .collapse').collapse('hide');
   }
 
 }

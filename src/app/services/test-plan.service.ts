@@ -4,7 +4,6 @@ import { Platform } from '../models/platform.model';
 import { Product } from '../models/product.model';
 import { TestPlanFormatted } from '../models/test-plan-formatted.model';
 import { TestPlan } from '../models/test-plan.model';
-import { AuthService } from './auth.service';
 import { HttpService } from './http.service';
 
 @Injectable({

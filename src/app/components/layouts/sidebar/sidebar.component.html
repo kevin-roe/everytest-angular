@@ -39,7 +39,7 @@
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item" *ngFor="let plan of testPlanService.formatted_test_plans">
         
-        <a *ngIf="plan.test_plans.length == 1" class="nav-link" [routerLink]="['/test_plans', plan.test_plans[0].test_plan_id]">
+        <a *ngIf="plan.test_plans.length == 1" (click)="toggleSidebarMenuCollapse()" class="nav-link" [routerLink]="['/test_plans', plan.test_plans[0].test_plan_id]">
             <i class="{{testPlanService.getPlatformIcon(plan.test_plans[0].platform_name)}}"></i>
             <span>{{plan.product_name}} / {{plan.test_plans[0].platform_name}}</span>
         </a>
@@ -51,7 +51,7 @@
         </a>
         <div id="collapse_{{plan.product_id}}" class="collapse" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a *ngFor="let platform of plan.test_plans" class="collapse-item" [routerLink]="['/test_plans', platform.test_plan_id]">
+                <a *ngFor="let platform of plan.test_plans" class="collapse-item" (click)="toggleSidebarMenuCollapse()" [routerLink]="['/test_plans', platform.test_plan_id]">
                     <i class="{{testPlanService.getPlatformIcon(platform.platform_name)}}"></i>
                     {{platform.platform_name}}
                 </a>
