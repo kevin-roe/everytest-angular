@@ -1,0 +1,122 @@
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h3 class="h3 text-gray-800">
+        {{test_plan.product.name}} / {{test_plan.platform.name}}
+    </h3>
+    <a href="#" data-toggle="modal" data-target="#editTestSuiteModal" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+        class="fas fa-cog fa-sm text-white-50"></i>&nbsp;Edit Test Suite</a>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-7 col-md-8 col-sm-10 col-xs-12">
+        <div class="card o-hidden border-0 shadow-lg">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">{{test_suite.name}}</h6>
+            </div>
+            <div class="card-body p-5">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="testSuites-table" width="100%" cellspacing="0">
+                        <colgroup>
+                            <col span="1" style="width: 65%;">
+                            <col span="1" style="width: 20%;">
+                            <col span="1" style="width: 15%;">
+                         </colgroup>
+                        <thead>
+                            <tr>
+                                <th>Test Cases</th>
+                                <th class="text-center">Test Steps</th>
+                                <th class="text-center">METS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let test_case of test_cases">
+                                <td>
+                                    <a [routerLink]="['/test_case',test_case.id]">
+                                        {{test_case.name}}
+                                    </a>
+                                </td>
+                                <td class="text-center">
+                                    {{test_case.test_steps_count}}
+                                </td>
+                                <td class="text-center table-{{test_case.mets_id | metsColor}}">
+                                    {{test_case.mets_id | metsName}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <a [routerLink]="['/test_plan', test_plan.id]" class="d-none d-sm-inline-block btn btn-outline-primary float-left">
+                    <i class="fas fa-chevron-left fa-sm"></i>&nbsp;Back to Test Plan
+                </a>
+                <a class="btn btn-primary float-right" href="#" data-toggle="modal" data-target="#addTestCaseModal">
+                    Add New Test Case
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Test Suite-->
+<div class="modal fade" id="editTestSuiteModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Test Suite</h5>
+                <button (click)="delete_clicked = false" class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-form" [formGroup]="editTestSuiteForm" (ngSubmit)="onEditTestSuiteSubmit()">
+                    <div class="form-group">
+                        <input type="text" class="form-control" formControlName="name">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" (click)="delete_clicked = false" type="button" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" type="submit" form="edit-form">Edit</button>
+                <button *ngIf="!delete_clicked" (click)="delete_clicked = true" class="btn btn-danger" type="button">Delete</button>
+                <button *ngIf="delete_clicked" (click)="onDeleteTestSuiteSubmit()" class="btn btn-danger" type="button">Are You Sure?</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add New Test Case-->
+<div class="modal fade" id="addTestCaseModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add a New Test Plan</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="add-form" [formGroup]="addTestCaseForm" (ngSubmit)="onAddTestCaseSubmit()">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <label>Test Case Name</label>
+                                <input type="text" class="form-control" formControlName="name">
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label for="platform">Select A METS Level</label>
+                                <select class="form-control" formControlName="mets">
+                                    <option value="1">Critical</option>
+                                    <option value="2">High</option>
+                                    <option value="3">Medium</option>
+                                    <option value="4">Low</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" type="submit" form="add-form">Add</button>
+            </div>
+        </div>
+    </div>
+</div>

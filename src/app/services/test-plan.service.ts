@@ -76,6 +76,15 @@ export class TestPlanService {
     })
   }
 
+  updateTestPlan(plan: TestPlan) {
+    this.test_plans.find(x => x.id == plan.id).product = plan.product
+    this.test_plans.find(x => x.id == plan.id).platform = plan.platform
+  }
+
+  deleteTestPlan(id: number) {
+    this.test_plans = this.test_plans.filter(x => x.id != id)
+  }
+
   public getPlatformIcon(name: string) {
     name = name.trim().toLowerCase();
     switch (name) { 

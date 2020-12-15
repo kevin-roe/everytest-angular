@@ -16,6 +16,12 @@ import { OrganizationSettingsComponent } from './components/organization/organiz
 import { ProductsComponent } from './components/organization/products/products.component';
 import { PlatformsComponent } from './components/organization/platforms/platforms.component';
 import { TestPlanComponent } from './components/test-plan/test-plan.component';
+import { TestSuiteComponent } from './components/test-suite/test-suite.component';
+import { TestCaseComponent } from './components/test-case/test-case.component';
+import { MetsNamePipe } from './services/mets-name.pipe';
+import { MetsColorPipe } from './services/mets-color.pipe';
+import { WorkflowsComponent } from './components/workflows/workflows.component';
+import { WorkflowComponent } from './components/workflow/workflow.component';
 
 
 @NgModule({
@@ -31,7 +37,13 @@ import { TestPlanComponent } from './components/test-plan/test-plan.component';
     OrganizationSettingsComponent,
     ProductsComponent,
     PlatformsComponent,
-    TestPlanComponent
+    TestPlanComponent,
+    TestSuiteComponent,
+    TestCaseComponent,
+    MetsNamePipe,
+    MetsColorPipe,
+    WorkflowsComponent,
+    WorkflowComponent
   ],
   imports: [
     BrowserModule,

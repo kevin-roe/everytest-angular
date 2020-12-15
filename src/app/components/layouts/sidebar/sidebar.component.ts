@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TestPlan } from 'src/app/models/test-plan.model';
-import { TestPlanRequest } from 'src/app/requests/new-test-plan.request';
+import { TestPlanRequest } from 'src/app/requests/test-plan.request';
 import { HttpService } from 'src/app/services/http.service';
 import { TestPlanService } from 'src/app/services/test-plan.service';
 declare var $: any;

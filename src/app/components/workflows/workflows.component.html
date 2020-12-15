@@ -1,0 +1,71 @@
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h3 class="h3 text-gray-800">{{test_plan.product.name}} / {{test_plan.platform.name}}</h3>
+</div>
+
+<!-- Workflows Card -->
+<div class="row justify-content-center">
+    <div class="col-lg-7 col-md-8 col-sm-10 col-xs-12">
+        <div class="card o-hidden border-0 shadow-lg">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Workflows</h6>
+            </div>
+            <div class="card-body p-5">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="testSuites-table" width="100%" cellspacing="0">
+                        <colgroup>
+                            <col span="1" style="width: 80%;">
+                            <col span="1" style="width: 20%;">
+                         </colgroup>
+                        <thead>
+                            <tr>
+                                <th>Workflow Name</th>
+                                <th class="text-center">Steps</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let workflow of workflows">
+                                <td>
+                                    <a [routerLink]="['/workflow', workflow.id]">{{workflow.name}}</a>
+                                </td>
+                                <td class="text-center">
+                                    {{workflow.workflow_steps_count}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <a [routerLink]="['/test_plan', test_plan.id]" class="d-none d-sm-inline-block btn btn-outline-primary float-left">
+                    <i class="fas fa-chevron-left fa-sm"></i>&nbsp;Back to Test Plan
+                </a>
+                <a class="btn btn-primary float-right" href="#" data-toggle="modal" data-target="#addWorkflowModal">
+                    Add New Test Suite
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add New Workflow-->
+<div class="modal fade" id="addWorkflowModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add a New Workflow</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="add-form" [formGroup]="addWorkflowForm" (ngSubmit)="onAddWorkflowSubmit()">
+                    <div class="form-group">
+                        <input type="text" class="form-control" formControlName="addField">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" type="submit" form="add-form">Add</button>
+            </div>
+        </div>
+    </div>
+</div>

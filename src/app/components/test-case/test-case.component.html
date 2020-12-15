@@ -1,0 +1,50 @@
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h3 class="h3 text-gray-800">
+        {{test_plan.product.name}} / {{test_plan.platform.name}}
+    </h3>
+    <a href="#" data-toggle="modal" data-target="#editTestCaseModal" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+        class="fas fa-cog fa-sm text-white-50"></i>&nbsp;Edit Test Case</a>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-7 col-md-8 col-sm-10 col-xs-12">
+        <div class="card o-hidden border-0 shadow-lg">
+            <div class="card-header d-sm-flex align-items-center justify-content-between py-3">
+                <h6 class="m-0 font-weight-bold text-primary">{{test_case.name}}</h6>
+                <p class="m-0 text-{{test_case.mets_id | metsColor}}">{{test_case.mets_id | metsName}}</p>
+            </div>
+            <div class="card-body p-5">
+                <div class="table-responsive">
+                    <table class="table table-bordered" width="100%" cellspacing="0">
+                        <colgroup>
+                            <col span="1" style="width: 10%;">
+                            <col span="1" style="width: 90%;">
+                         </colgroup>
+                        <thead>
+                            <tr>
+                                <th class="text-center">Step</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let test_step of test_steps">
+                                <td class="text-center">
+                                    {{test_step.order}}
+                                </td>
+                                <td>
+                                    {{test_step.action}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <a [routerLink]="['/test_suite', test_suite.id]" class="d-none d-sm-inline-block btn btn-outline-primary float-left">
+                    <i class="fas fa-chevron-left fa-sm"></i>&nbsp;Back to Test Suite
+                </a>
+                <a class="btn btn-primary float-right" href="#" data-toggle="modal" data-target="#addTestCaseModal">
+                    Add New Test Case
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
