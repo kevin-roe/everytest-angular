@@ -55,7 +55,6 @@ export class TestPlanComponent implements OnInit {
         this.testPlanService.updateSideNavMenu()
         $("#editTestPlanModal").modal('hide');
       }, errors => {
-        console.log(errors)
         alert("Error! (Need to handle these better...)") //TODO: Handle errors
       }
     )
@@ -69,7 +68,6 @@ export class TestPlanComponent implements OnInit {
         $("#editTestPlanModal").modal('hide');
         this.router.navigate(['/dashboard'])
       }, errors => {
-        console.log(errors)
         alert("Error! (Need to handle these better...)") //TODO: Handle errors
       }
     )
@@ -85,7 +83,6 @@ export class TestPlanComponent implements OnInit {
         this.test_suites.push(data)
         $("#addTestSuiteModal").modal('hide');
       }, errors => {
-        console.log(errors)
         alert("Error! (Need to handle these better...)") //TODO: Handle errors
       }
     )

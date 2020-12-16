@@ -12,7 +12,6 @@ export class HttpService {
   constructor(private httpClient: HttpClient) { }
 
   public get<T>(path: string) {
-    console.log(this.REST_API_SERVER + path)
     return this.httpClient.get<T>(this.REST_API_SERVER + path, { withCredentials: true });
   }
 

@@ -45,7 +45,6 @@ export class WorkflowsComponent implements OnInit {
         this.workflows.push(data)
         $("#addWorkflowModal").modal('hide');
       }, errors => {
-        console.log(errors)
         alert("Error! (Need to handle these better...)") //TODO: Handle errors
       }
     )

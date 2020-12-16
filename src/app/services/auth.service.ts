@@ -23,7 +23,6 @@ export class AuthService {
 
   login(req : LoginRequest) {
     return this.http.post<User>("sessions", req).subscribe((data: User) => {
-      console.log(data)
       this.user$ = data
       this.router.navigate(['/dashboard'])
     })

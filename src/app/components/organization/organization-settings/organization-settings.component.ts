@@ -30,7 +30,6 @@ export class OrganizationSettingsComponent implements OnInit {
     }
     this.http.put<Organization>(`organizations`, req).subscribe(
       res => {
-        console.log("Success! ", res)
         this.authService.user$.organization.name = res.name
       }, error => {
         alert("Error!") //TODO: Handle errors
