@@ -38,6 +38,13 @@ export class PlatformsComponent implements OnInit {
     });
   }
 
+  onCancel() {
+    this.addPlatformForm.reset();
+    $("#addPlatformModal").modal('hide');
+    this.editPlatformForm.reset();
+    $("#editPlatformModal").modal('hide');
+  }
+
   onEditSubmit() {
     let req: PlatformRequest = {
       name: this.editPlatformForm.value.editField,

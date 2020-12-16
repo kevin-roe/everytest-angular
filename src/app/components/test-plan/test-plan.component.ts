@@ -60,6 +60,15 @@ export class TestPlanComponent implements OnInit {
     )
   }
 
+  onCancel() {
+    this.editTestPlanForm.get('product').setValue(this.test_plan.product.id)
+    this.editTestPlanForm.get('platform').setValue(this.test_plan.platform.id)
+    $("#editTestPlanModal").modal('hide');
+    this.addTestSuiteForm.reset()
+    $("#addTestSuiteModal").modal('hide');
+    this.delete_clicked = false
+  }
+
   deleteTestPlan() {
     this.http.delete(`test_plans/${this.test_plan.id}`).subscribe(
       () => {

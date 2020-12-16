@@ -34,6 +34,11 @@ export class WorkflowsComponent implements OnInit {
       'addField': new FormControl(null, [Validators.required]),
     });
   }
+
+  onCancel() {
+    this.addWorkflowForm.reset();
+    $("#addWorkflowModal").modal('hide');
+  }
   
   onAddWorkflowSubmit() {
     let req: WorkflowRequest = {

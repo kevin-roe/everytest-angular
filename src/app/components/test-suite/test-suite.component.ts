@@ -44,6 +44,14 @@ export class TestSuiteComponent implements OnInit {
     });
   }
 
+  onCancel() {
+    this.editTestSuiteForm.get('name').setValue(this.test_suite.name)
+    $("#editTestSuiteModal").modal('hide');
+    this.addTestCaseForm.reset();
+    this.delete_clicked = false;
+    $("#addTestCaseModal").modal('hide');
+  }
+
   onEditTestSuiteSubmit() {
     let req: TestSuiteRequest = {
       test_plan_id: this.test_plan.id,

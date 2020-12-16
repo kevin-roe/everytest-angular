@@ -39,6 +39,13 @@ export class ProductsComponent implements OnInit {
     });
   }
 
+  onCancel() {
+    this.addProductForm.reset();
+    $("#addProductModal").modal('hide');
+    this.editProductForm.reset();
+    $("#editProductModal").modal('hide');
+  }
+
   onEditSubmit() {
     let req: ProductRequest = {
       name: this.editProductForm.value.editField,

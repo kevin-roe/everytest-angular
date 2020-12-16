@@ -27,6 +27,11 @@ export class SidebarComponent implements OnInit {
     });
   }
 
+  onCancel() {
+    this.addTestPlanForm.reset();
+    $("#addTestPlanModal").modal('hide');
+  }
+
   onSubmit() {
     let req: TestPlanRequest = {
       product_id: this.addTestPlanForm.get("product").value,

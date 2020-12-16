@@ -53,7 +53,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Edit Test Plan</h5>
-                <button (click)="delete_clicked = false" class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <button (click)="delete_clicked = false" class="close" type="button" (click)="onCancel()" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
@@ -78,7 +78,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" (click)="delete_clicked = false" type="button" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-secondary" type="button" (click)="onCancel()">Cancel</button>
                 <button class="btn btn-primary" type="submit" form="edit-test-plan-form">Edit</button>
                 <button *ngIf="!delete_clicked" (click)="delete_clicked = true" class="btn btn-danger" type="button">Delete</button>
                 <button *ngIf="delete_clicked" (click)="deleteTestPlan()" class="btn btn-danger" type="button">Are You Sure?</button>
@@ -93,7 +93,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Add a New Test Suite</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <button class="close" type="button" (click)="onCancel()" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
@@ -105,7 +105,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-secondary" type="button" (click)="onCancel()">Cancel</button>
                 <button class="btn btn-primary" type="submit" form="add-form">Add</button>
             </div>
         </div>
