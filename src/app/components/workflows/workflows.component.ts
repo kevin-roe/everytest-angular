@@ -48,6 +48,7 @@ export class WorkflowsComponent implements OnInit {
     this.http.post<Workflow>(`workflows`, req).subscribe(
       data => {
         this.workflows.push(data)
+        this.addWorkflowForm.reset();
         $("#addWorkflowModal").modal('hide');
       }, errors => {
         alert("Error! (Need to handle these better...)") //TODO: Handle errors

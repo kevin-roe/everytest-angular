@@ -87,6 +87,7 @@ export class TestSuiteComponent implements OnInit {
     this.http.post<TestCase>(`test_cases`, req).subscribe(
       data => {
         this.test_cases.push(data)
+        this.addTestCaseForm.reset();
         $("#addTestCaseModal").modal('hide');
       }, error => {
         alert("Error!")

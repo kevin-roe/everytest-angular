@@ -90,6 +90,7 @@ export class TestPlanComponent implements OnInit {
     this.http.post<TestSuite>(`test_suites`, req).subscribe(
       data => {
         this.test_suites.push(data)
+        this.addTestSuiteForm.reset();
         $("#addTestSuiteModal").modal('hide');
       }, errors => {
         alert("Error! (Need to handle these better...)") //TODO: Handle errors
