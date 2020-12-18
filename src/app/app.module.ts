@@ -22,6 +22,7 @@ import { MetsNamePipe } from './services/mets-name.pipe';
 import { MetsColorPipe } from './services/mets-color.pipe';
 import { WorkflowsComponent } from './components/workflows/workflows.component';
 import { WorkflowComponent } from './components/workflow/workflow.component';
+import { UsersComponent } from './components/organization/users/users.component';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { WorkflowComponent } from './components/workflow/workflow.component';
     MetsNamePipe,
     MetsColorPipe,
     WorkflowsComponent,
-    WorkflowComponent
+    WorkflowComponent,
+    UsersComponent
   ],
   imports: [
     BrowserModule,

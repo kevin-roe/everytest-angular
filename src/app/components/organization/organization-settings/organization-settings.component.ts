@@ -14,8 +14,6 @@ import { HttpService } from 'src/app/services/http.service';
 })
 export class OrganizationSettingsComponent implements OnInit {
   organizationForm: FormGroup;
-  products: Product[];
-  platforms: Platform[];
 
   constructor(private authService: AuthService, private http: HttpService) { }
 

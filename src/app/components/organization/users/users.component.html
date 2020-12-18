@@ -1,0 +1,169 @@
+<div class="card o-hidden border-0 shadow-lg">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Edit Users</h6>
+    </div>
+    <div class="card-body p-5">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="users-table" width="100%" cellspacing="0">
+                <colgroup>
+                    <col span="1" style="width: 80%;">
+                    <col span="1" style="width: 10%;">
+                    <col span="1" style="width: 10%;">
+                 </colgroup>
+                <tbody>
+                    <tr>
+                        <td>User</td>
+                        <td>Edit</td>
+                        <td>Delete</td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr *ngFor="let user of users">
+                        <td>{{user.first_name}} {{user.last_name}}</td>
+                        <td class="text-center">
+                            <a (click)="setUser(user, true)" href="#" data-toggle="modal" data-target="#editUserModal"><i class="fas fa-edit"></i></a>
+                        </td>
+                        <td class="text-center">
+                            <div *ngIf="user.id == authService.user$.id; else elseBlock"><i class="fas fa-trash-alt"></i></div>
+                            <ng-template #elseBlock>
+                                <a (click)="setUser(user, false)" href="#" data-toggle="modal" data-target="#deleteUserModal">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            </ng-template>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <a class="btn btn-primary float-right" href="#" data-toggle="modal" data-target="#addUserModal">
+            Add New User
+        </a>
+    </div>
+</div>
+
+<!-- Edit User Model -->
+<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit User: {{user?.first_name}} {{user?.last_name}}</h5>
+                <button class="close" type="button" (click)="onCancel()" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="user-edit-form" [formGroup]="editUserForm" (ngSubmit)="onEditSubmit()">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <input type="text" class="form-control" placeholder="First Name" formControlName="first_name">
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <input type="text" class="form-control" placeholder="Last Name" formControlName="last_name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-9 mb-2">
+                                <input type="text" class="form-control" placeholder="Email" formControlName="email">
+                            </div>
+                            <div class="col-md-2 mb-2 ml-2">
+                                <input type="checkbox" formControlName="admin" class="form-check-input"/>
+                                <label class="form-check-label">Admin?</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <input type="text" class="form-control" placeholder="Password" formControlName="password">
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <input type="text" class="form-control" placeholder="Password Confirmation" formControlName="password_confirmation">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" (click)="onCancel()">Cancel</button>
+                <button class="btn btn-primary" type="submit" form="user-edit-form">Edit User</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add User Model -->
+<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add New User</h5>
+                <button class="close" type="button" (click)="onCancel()" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="user-new-form" [formGroup]="newUserForm" (ngSubmit)="onAddSubmit()">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <input type="text" class="form-control" placeholder="First Name" formControlName="first_name">
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <input type="text" class="form-control" placeholder="Last Name" formControlName="last_name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-9 mb-2">
+                                <input type="text" class="form-control" placeholder="Email" formControlName="email">
+                            </div>
+                            <div class="col-md-2 mb-2 ml-2">
+                                <input type="checkbox" formControlName="admin" class="form-check-input"/>
+                                <label class="form-check-label">Admin?</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <input type="text" class="form-control" placeholder="Password" formControlName="password">
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <input type="text" class="form-control" placeholder="Password Confirmation" formControlName="password_confirmation">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" (click)="onCancel()">Cancel</button>
+                <button class="btn btn-primary" type="submit" form="user-new-form">Add User</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete User Modal -->
+<div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete User: {{user?.first_name}} {{user?.last_name}}</h5>
+                <button class="close" type="button" (click)="onCancel()" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this platform?
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" (click)="onCancel()">Cancel</button>
+                <button class="btn btn-danger" (click)="onDeleteSubmit()">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
