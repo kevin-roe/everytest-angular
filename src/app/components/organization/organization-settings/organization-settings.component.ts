@@ -28,6 +28,7 @@ export class OrganizationSettingsComponent implements OnInit {
     this.http.put<Organization>(`organizations`, req).subscribe(
       res => {
         this.authService.user$.organization.name = res.name
+        this.organizationForm.markAsPristine()
       }, error => {
         alert("Error!") //TODO: Handle errors
       }

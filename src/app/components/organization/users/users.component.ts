@@ -77,7 +77,6 @@ export class UsersComponent implements OnInit {
         this.users[index] = user
         this.onCancel();
       }, err => {
-        console.log(err.error)
         alert(err.error)
       })
   }
