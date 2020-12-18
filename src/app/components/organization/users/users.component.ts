@@ -59,6 +59,11 @@ export class UsersComponent implements OnInit {
     this.user = user
     if (setEditForm) {
       this.editUserForm.patchValue(user)
+      if (this.user.id == this.authService.user$.id) {
+        this.editUserForm.get('admin').disable()
+      } else {
+        this.editUserForm.get('admin').enable()
+      }
     }
   }
 
