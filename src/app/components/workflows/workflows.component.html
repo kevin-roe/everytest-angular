@@ -1,5 +1,5 @@
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h3 class="h3 text-gray-800">{{test_plan.product.name}} / {{test_plan.platform.name}}</h3>
+    <h3 class="h3 text-gray-800">{{product.name}} Workflows</h3>
 </div>
 
 <!-- Workflows Card -->
@@ -34,9 +34,6 @@
                         </tbody>
                     </table>
                 </div>
-                <a [routerLink]="['/test_plan', test_plan.id]" class="d-none d-sm-inline-block btn btn-outline-primary float-left">
-                    <i class="fas fa-chevron-left fa-sm"></i>&nbsp;Back to Test Plan
-                </a>
                 <a class="btn btn-primary float-right" href="#" data-toggle="modal" data-target="#addWorkflowModal">
                     Add New Workflow
                 </a>

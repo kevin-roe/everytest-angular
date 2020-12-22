@@ -38,19 +38,18 @@
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item" *ngFor="let plan of testPlanService.formatted_test_plans">
-        
-        <a *ngIf="plan.test_plans.length == 1" (click)="toggleSidebarMenuCollapse()" class="nav-link" [routerLink]="['/test_plan', plan.test_plans[0].test_plan_id]">
-            <i class="{{testPlanService.getPlatformIcon(plan.test_plans[0].platform_name)}}"></i>
-            <span>{{plan.product_name}} / {{plan.test_plans[0].platform_name}}</span>
-        </a>
 
-        <a *ngIf="plan.test_plans.length > 1" class="nav-link collapsed" href="#" data-toggle="collapse" [attr.data-target]="'#collapse_' + plan.product_id"
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" [attr.data-target]="'#collapse_' + plan.product_id"
             aria-expanded="true">
             <i class="fas fa-fw fa-cog"></i>
             <span>{{plan.product_name}}</span>
         </a>
         <div id="collapse_{{plan.product_id}}" class="collapse" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" (click)="toggleSidebarMenuCollapse()" [routerLink]="['/product', plan.product_id, 'workflows']">
+                    <i class="fas fa-fw fa-globe"></i>
+                    Workflows
+                </a>
                 <a *ngFor="let platform of plan.test_plans" class="collapse-item" (click)="toggleSidebarMenuCollapse()" [routerLink]="['/test_plan', platform.test_plan_id]">
                     <i class="{{testPlanService.getPlatformIcon(platform.platform_name)}}"></i>
                     {{platform.platform_name}}

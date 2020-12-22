@@ -32,7 +32,7 @@ const routes: Routes = [
   { path: 'test_plan/:id', component: TestPlanComponent, canActivate: [AuthGuard], resolve: {test_plan: TestPlanResolverService} },
   { path: 'test_suite/:id', component: TestSuiteComponent, canActivate: [AuthGuard], resolve: { test_suite: TestSuiteResolverService } },
   { path: 'test_case/:id', component: TestCaseComponent, canActivate: [AuthGuard], resolve: { test_case: TestCaseResolverService } },
-  { path: 'test_plan/:id/workflows', component: WorkflowsComponent, canActivate: [AuthGuard], resolve: { workflows: WorkflowsResolverService } },
+  { path: 'product/:id/workflows', component: WorkflowsComponent, canActivate: [AuthGuard], resolve: { workflows: WorkflowsResolverService } },
   { path: 'workflow/:id', component: WorkflowComponent, canActivate: [AuthGuard], resolve: { workflow_steps: WorkflowStepsResolverService } }
 ];
 

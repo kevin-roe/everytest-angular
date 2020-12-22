@@ -1,4 +1,4 @@
 export interface WorkflowRequest {
-    test_plan_id: number
+    product_id: number
     name: string
 }

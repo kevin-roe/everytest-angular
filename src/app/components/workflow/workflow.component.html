@@ -1,6 +1,6 @@
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h3 class="h3 text-gray-800">
-        {{test_plan.product.name}} / {{test_plan.platform.name}}
+        {{product.name}} Workflows
     </h3>
     <a href="#" data-toggle="modal" data-target="#editWorkflowModal" class="disabled d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
         class="fas fa-cog fa-sm text-white-50"></i>&nbsp;Edit Workflow</a>
@@ -37,7 +37,7 @@
                         </tbody>
                     </table>
                 </div>
-                <a [routerLink]="['/test_plan', test_plan.id, 'workflows']" class="d-none d-sm-inline-block btn btn-outline-primary float-left">
+                <a [routerLink]="['/product', product.id, 'workflows']" class="d-none d-sm-inline-block btn btn-outline-primary float-left">
                     <i class="fas fa-chevron-left fa-sm"></i>&nbsp;Back to Workflows
                 </a>
                 <a class="disabled btn btn-primary float-right" href="#" data-toggle="modal" data-target="#addTestCaseModal">

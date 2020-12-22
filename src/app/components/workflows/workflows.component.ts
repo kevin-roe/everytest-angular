@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TestPlan } from 'src/app/models/test-plan.model';
+import { Product } from 'src/app/models/product.model';
 import { Workflow } from 'src/app/models/workflow.model';
 import { WorkflowRequest } from 'src/app/requests/workflow.request';
 import { HttpService } from 'src/app/services/http.service';
+import { TestPlanService } from 'src/app/services/test-plan.service';
 declare var $: any;
 
 @Component({
@@ -13,7 +14,7 @@ declare var $: any;
   styleUrls: ['./workflows.component.css']
 })
 export class WorkflowsComponent implements OnInit {
-  test_plan: TestPlan
+  product: Product
   workflows: Workflow[]
   addWorkflowForm: FormGroup;
   delete_clicked = false
@@ -22,7 +23,7 @@ export class WorkflowsComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.data.subscribe(data => {
-      this.test_plan = data.workflows[0]
+      this.product = data.workflows[0]
       this.workflows = data.workflows[1]
 
       this.initForm()
@@ -42,7 +43,7 @@ export class WorkflowsComponent implements OnInit {
   
   onAddWorkflowSubmit() {
     let req: WorkflowRequest = {
-      test_plan_id: this.test_plan.id,
+      product_id: this.product.id,
       name: this.addWorkflowForm.value.addField,
     }
     this.http.post<Workflow>(`workflows`, req).subscribe(

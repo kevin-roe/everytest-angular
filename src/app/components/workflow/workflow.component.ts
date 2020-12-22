@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TestPlan } from 'src/app/models/test-plan.model';
+import { Product } from 'src/app/models/product.model';
 import { WorkflowStep } from 'src/app/models/workflow-step.model';
 import { Workflow } from 'src/app/models/workflow.model';
 import { HttpService } from 'src/app/services/http.service';
@@ -11,7 +11,7 @@ import { HttpService } from 'src/app/services/http.service';
   styleUrls: ['./workflow.component.css']
 })
 export class WorkflowComponent implements OnInit {
-  test_plan: TestPlan
+  product: Product
   workflow: Workflow
   workflow_steps: WorkflowStep[]
 
@@ -19,7 +19,7 @@ export class WorkflowComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.data.subscribe(data => {
-      this.test_plan = data.workflow_steps[0]
+      this.product = data.workflow_steps[0]
       this.workflow = data.workflow_steps[1]
       this.workflow_steps = data.workflow_steps[2]
     })
