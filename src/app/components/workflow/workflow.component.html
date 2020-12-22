@@ -2,7 +2,7 @@
     <h3 class="h3 text-gray-800">
         {{product.name}} Workflows
     </h3>
-    <a href="#" data-toggle="modal" data-target="#editWorkflowModal" class="disabled d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+    <a href="#" data-toggle="modal" data-target="#editWorkflowModal" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
         class="fas fa-cog fa-sm text-white-50"></i>&nbsp;Edit Workflow</a>
 </div>
 
@@ -40,9 +40,33 @@
                 <a [routerLink]="['/product', product.id, 'workflows']" class="d-none d-sm-inline-block btn btn-outline-primary float-left">
                     <i class="fas fa-chevron-left fa-sm"></i>&nbsp;Back to Workflows
                 </a>
-                <a class="disabled btn btn-primary float-right" href="#" data-toggle="modal" data-target="#addTestCaseModal">
-                    Add New Test Case
-                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Workflow-->
+<div class="modal fade" id="editworkflowModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Workflow</h5>
+                <button (click)="delete_clicked = false" class="close" type="button" (click)="onCancel()" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-form" [formGroup]="editworkflowForm" (ngSubmit)="onEditworkflowSubmit()">
+                    <div class="form-group">
+                        <input type="text" class="form-control" formControlName="name">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" (click)="onCancel()" type="button" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" type="submit" form="edit-form">Edit</button>
+                <button *ngIf="!delete_clicked" (click)="delete_clicked = true" class="btn btn-danger" type="button">Delete</button>
+                <button *ngIf="delete_clicked" (click)="onDeleteworkflowSubmit()" class="btn btn-danger" type="button">Are You Sure?</button>
             </div>
         </div>
     </div>
