@@ -20,7 +20,7 @@ export class TestSuiteComponent implements OnInit {
   test_cases: TestCase[]
   editTestSuiteForm: FormGroup
   addTestCaseForm: FormGroup
-  delete_clicked = false
+  deleteClicked = false
 
   constructor(private route: ActivatedRoute, private http: HttpService, public router: Router) { }
 
@@ -48,7 +48,7 @@ export class TestSuiteComponent implements OnInit {
     this.editTestSuiteForm.get('name').setValue(this.test_suite.name)
     $("#editTestSuiteModal").modal('hide');
     this.addTestCaseForm.reset();
-    this.delete_clicked = false;
+    this.deleteClicked = false;
     $("#addTestCaseModal").modal('hide');
   }
 

@@ -19,7 +19,7 @@ export class TestPlanComponent implements OnInit {
   test_suites: TestSuite[];
   editTestPlanForm: FormGroup;
   addTestSuiteForm: FormGroup;
-  delete_clicked = false
+  deleteClicked = false
 
   constructor(private route: ActivatedRoute, private http: HttpService, public testPlanService: TestPlanService, private router: Router) { }
 
@@ -43,7 +43,7 @@ export class TestPlanComponent implements OnInit {
   }
 
   onEditTestPlanSubmit() {
-    this.delete_clicked = false
+    this.deleteClicked = false
     let req: TestPlanRequest = {
       product_id: this.editTestPlanForm.get("product").value,
       platform_id: this.editTestPlanForm.get("platform").value
@@ -66,7 +66,7 @@ export class TestPlanComponent implements OnInit {
     $("#editTestPlanModal").modal('hide');
     this.addTestSuiteForm.reset()
     $("#addTestSuiteModal").modal('hide');
-    this.delete_clicked = false
+    this.deleteClicked = false
   }
 
   deleteTestPlan() {

@@ -33,7 +33,7 @@ const routes: Routes = [
   { path: 'test_suite/:id', component: TestSuiteComponent, canActivate: [AuthGuard], resolve: { test_suite: TestSuiteResolverService } },
   { path: 'test_case/:id', component: TestCaseComponent, canActivate: [AuthGuard], resolve: { test_case: TestCaseResolverService } },
   { path: 'product/:id/workflows', component: WorkflowsComponent, canActivate: [AuthGuard], resolve: { workflows: WorkflowsResolverService } },
-  { path: 'workflow/:id', component: WorkflowComponent, canActivate: [AuthGuard], resolve: { workflow_steps: WorkflowStepsResolverService } }
+  { path: 'workflow/:id', component: WorkflowComponent, canActivate: [AuthGuard], resolve: { workflowSteps: WorkflowStepsResolverService } }
 ];
 
 @NgModule({

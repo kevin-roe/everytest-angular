@@ -17,4 +17,9 @@ export class JQueryService {
   hideModal(id: string) {
     $(`#${id}`).modal('hide');
   }
+
+  toast(id: string, delay: number = 2000) {
+    $(`#${id}`).toast({delay: delay});
+    $(`#${id}`).toast('show');
+  }
 }

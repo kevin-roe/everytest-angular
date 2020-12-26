@@ -19,13 +19,13 @@ import { JQueryService } from 'src/app/services/j-query.service';
 export class WorkflowComponent implements OnInit {
   product: Product
   workflow: Workflow
-  workflow_steps: WorkflowStep[]
-  delete_clicked = false;
+  workflowSteps: WorkflowStep[]
+  deleteClicked = false;
 
   // Forms
-  edit_workflow_form: FormGroup;
-  workflow_steps_form: FormGroup;
-  workflow_steps_form_array: FormArray;
+  editWorkflowForm: FormGroup;
+  workflowStepsForm: FormGroup;
+  workflowStepsFormArray: FormArray;
 
   // Notes 
   notesFormToEdit: number
@@ -35,18 +35,23 @@ export class WorkflowComponent implements OnInit {
   // Submit button
   submitButtonText: string = "Save";
 
-  constructor(private route: ActivatedRoute, private http: HttpService, public router: Router, private spinner: SpinnerService, private jQuery: JQueryService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private http: HttpService,
+    public router: Router,
+    private spinner: SpinnerService,
+    private jQuery: JQueryService) { }
 
   ngOnInit(): void {
     this.route.data.subscribe(data => {
-      this.product = data.workflow_steps[0]
-      this.workflow = data.workflow_steps[1]
-      this.workflow_steps = data.workflow_steps[2]
+      this.product = data.workflowSteps[0]
+      this.workflow = data.workflowSteps[1]
+      this.workflowSteps = data.workflowSteps[2]
 
       this.initForm()
-
-      this.jQuery.initTooltips()
     })
+
+    this.jQuery.initTooltips()
   }
 
   getControls() : AbstractControl[] {
@@ -54,19 +59,19 @@ export class WorkflowComponent implements OnInit {
   }
 
   getFormArray() : FormArray {
-    return this.workflow_steps_form.get('workflow_steps_form_array') as FormArray
+    return this.workflowStepsForm.get('workflowStepsFormArray') as FormArray
   }
 
   initForm() {
-    this.edit_workflow_form = new FormGroup({
+    this.editWorkflowForm = new FormGroup({
       name: new FormControl(this.workflow.name, [Validators.required]),
     })
 
-    this.workflow_steps_form = new FormGroup({
-      workflow_steps_form_array: new FormArray([])
+    this.workflowStepsForm = new FormGroup({
+      workflowStepsFormArray: new FormArray([])
     })
 
-    this.workflow_steps.forEach(s => {
+    this.workflowSteps.forEach(s => {
       this.getControls().push(new FormGroup({
         id: new FormControl(s.id),
         action: new FormControl(s.action, [Validators.required]),
@@ -106,7 +111,7 @@ export class WorkflowComponent implements OnInit {
   }
 
   markAsDirty() {
-    this.workflow_steps_form.markAsDirty()
+    this.workflowStepsForm.markAsDirty()
     this.submitButtonText = "Save"
   }
 
@@ -131,8 +136,8 @@ export class WorkflowComponent implements OnInit {
     this.spinner.start();
     this.http.put<WorkflowStep[]>(`workflows/${this.workflow.id}/workflow_steps`, req).subscribe(
       res => {
-        this.workflow_steps = res
-        this.workflow_steps_form.markAsPristine()
+        this.workflowSteps = res
+        this.workflowStepsForm.markAsPristine()
         this.submitButtonText = "Saved!"
       }, err => {
         alert("could not save!")
@@ -140,10 +145,6 @@ export class WorkflowComponent implements OnInit {
     ).add(() => {
       this.spinner.stop();
     });
-  }
-
-  debug() {
-    console.log(this.getControls())
   }
 
   openNotesModal(i: number) {
@@ -168,7 +169,7 @@ export class WorkflowComponent implements OnInit {
   }
 
   onCancel() {
-    this.edit_workflow_form.get('name').setValue(this.workflow.name)
+    this.editWorkflowForm.get('name').setValue(this.workflow.name)
     this.jQuery.hideModal("editworkflowModal");
 
     this.notes = "";
@@ -178,7 +179,7 @@ export class WorkflowComponent implements OnInit {
   onEditworkflowSubmit() {
     let req: WorkflowRequest = {
       product_id: this.product.id,
-      name: this.edit_workflow_form.get("name").value
+      name: this.editWorkflowForm.get("name").value
     }
     this.http.put<Workflow>(`workflows/${this.workflow.id}`, req).subscribe(
       data => {

@@ -17,7 +17,7 @@ export class WorkflowsComponent implements OnInit {
   product: Product
   workflows: Workflow[]
   addWorkflowForm: FormGroup;
-  delete_clicked = false
+  deleteClicked = false
 
   constructor(private route: ActivatedRoute, private http: HttpService, public router: Router) { }
 
