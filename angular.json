@@ -56,6 +56,7 @@
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.js",
+              "node_modules/popper.js/dist/umd/popper.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.js",
               "src/assets/startbootstrap-sb-admin-2-gh-pages/js/sb-admin-2.js"
             ]

@@ -1,45 +1,107 @@
+
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h3 class="h3 text-gray-800">
         {{product.name}} Workflows
     </h3>
     <a href="#" data-toggle="modal" data-target="#editWorkflowModal" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-        class="fas fa-cog fa-sm text-white-50"></i>&nbsp;Edit Workflow</a>
+        class="fas fa-cog fa-sm text-white-50"></i>&nbsp;Edit Workflow Name</a>
 </div>
 
 <div class="row justify-content-center">
-    <div class="col-lg-7 col-md-8 col-sm-10 col-xs-12">
+    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
         <div class="card o-hidden border-0 shadow-lg">
             <div class="card-header d-sm-flex align-items-center justify-content-between py-3">
-                <h6 class="m-0 font-weight-bold text-primary">{{workflow.name}}</h6>
+                <h6 class="m-0 font-weight-bold text-primary">{{workflow.name}} Workflow</h6>
             </div>
             <div class="card-body p-5">
                 <div class="table-responsive">
-                    <table class="table table-bordered" width="100%" cellspacing="0">
-                        <colgroup>
-                            <col span="1" style="width: 10%;">
-                            <col span="1" style="width: 90%;">
-                         </colgroup>
-                        <thead>
-                            <tr>
-                                <th class="text-center">Step</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let workflow_step of workflow_steps">
-                                <td class="text-center">
-                                    {{workflow_step.order}}
-                                </td>
-                                <td>
-                                    {{workflow_step.action}}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <form id="update-workflow-steps-form" [formGroup]="workflow_steps_form" (ngSubmit)="onUpdateWorkflowSteps()">
+                        <div formArrayName="workflow_steps_form_array" style="overflow-x:auto;">
+                            <table class="table table-striped" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th class="text-center">Step</th>
+                                        <th>Action</th>
+                                        <th class="text-center">Notes?</th>
+                                        <th class="text-center">Options</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody  cdkDropList (cdkDropListDropped)="drop($event)">
+                                    <tr *ngFor="let control of getControls(); let i=index" [formGroupName]="i" cdkDrag cdkDragLockAxis="y">
+                                        <td class="align-middle" style="width: 5%;" cdkDragHandle class="pointer-handle">
+                                            <i class="fas fa-bars mt-2 ml-2"></i>
+                                        </td>
+                                        <td class="align-middle" style="width: 5%;">
+                                            <div class="ml-3">{{control.value.order}}</div>
+                                        </td>
+                                        <td style="width: 80%;">
+                                            <input class="form-control form-control-sm" formControlName="action" (ngModelChange)="markAsDirty($event)">
+                                        </td>
+                                        <td style="width: 5%;">
+                                            <i *ngIf="notesPresent(control)" class="far fa-thumbs-up mt-2 ml-3" (click)="debug()"></i>
+                                            <!-- data-toggle="tooltip" data-placement="top" [title]="control.get('notes').value" -->
+                                        </td>
+                                        <td class="align-middle" style="width: 5%">
+                                            <div class="btn-group ml-2">
+                                                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <button type="button" class="dropdown-item" (click)="openNotesModal(i)" data-toggle="modal" data-target="#editNotesModal">Notes</button>
+                                                    <button type="button" class="dropdown-item" (click)="removeStep(i)">Remove</button>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
                 </div>
-                <a [routerLink]="['/product', product.id, 'workflows']" class="d-none d-sm-inline-block btn btn-outline-primary float-left">
-                    <i class="fas fa-chevron-left fa-sm"></i>&nbsp;Back to Workflows
-                </a>
+                <div class="row">
+                    <div class="col-12 mb-2">
+                        <a [routerLink]="['/product', product.id, 'workflows']" class="d-none d-sm-inline-block btn btn-outline-primary float-left">
+                            <i class="fas fa-chevron-left fa-sm"></i>&nbsp;Back to Workflows
+                        </a>
+                        <button class="d-none d-sm-inline-block btn btn-outline-primary float-right" (click)="addWorkflowStep()">
+                            <i class="fas fa-plus"></i>
+                            Add Step
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <button type="submit" [disabled]="!workflow_steps_form.dirty" 
+                        form="update-workflow-steps-form" class="d-none d-sm-inline-block btn btn-primary float-right">
+                            {{submitButtonText}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Notes Modal-->
+<div class="modal fade" id="editNotesModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Notes</h5>
+                <button class="close" type="button" (click)="onCancel()" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Action:</strong> {{action}}</p>
+                <div class="form-group">
+                    <textarea type="text" class="form-control" [(ngModel)]="notes"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" (click)="onCancel()">Cancel</button>
+                <button class="btn btn-primary" type="submit" (click)="saveNotes()">Save</button>
             </div>
         </div>
     </div>
@@ -56,7 +118,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="edit-form" [formGroup]="editworkflowForm" (ngSubmit)="onEditworkflowSubmit()">
+                <form id="edit-form" [formGroup]="edit_workflow_form" (ngSubmit)="onEditworkflowSubmit()">
                     <div class="form-group">
                         <input type="text" class="form-control" formControlName="name">
                     </div>

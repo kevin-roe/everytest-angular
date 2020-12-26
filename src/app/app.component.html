@@ -1,12 +1,6 @@
 <body *ngIf="public_routes.indexOf(router.url) == -1; else publicRoute" id="page-top">
     <div id="wrapper">
-
-        <!-- <div *ngIf="showLoadingSpinner" class="text-primary spinner-border spinner" style="width: 5rem; height: 5rem;" role="status">
-            <span class="sr-only">Loading...</span>
-        </div> -->
-
-        <div *ngIf="showLoadingSpinner" id="cover-spin"></div>
-
+        <div *ngIf="spinner.showSpinner" id="cover-spin"></div>
         <sidebar></sidebar>
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
