@@ -1,7 +1,5 @@
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h3 class="h3 text-gray-800">
-        {{test_plan.product.name}} / {{test_plan.platform.name}}
-    </h3>
+    <h3 class="h3 text-gray-800">Edit&nbsp;<strong>{{test_plan.product.name}} / {{test_plan.platform.name}}</strong>&nbsp;Test Suite</h3>
     <a href="#" data-toggle="modal" data-target="#editTestSuiteModal" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
         class="fas fa-cog fa-sm text-white-50"></i>&nbsp;Edit Test Suite</a>
 </div>
@@ -30,7 +28,7 @@
                         <tbody>
                             <tr *ngFor="let test_case of test_cases">
                                 <td>
-                                    <a [routerLink]="['/test_case',test_case.id]">
+                                    <a [routerLink]="['/edit', 'test_case',test_case.id]">
                                         {{test_case.name}}
                                     </a>
                                 </td>
@@ -44,7 +42,7 @@
                         </tbody>
                     </table>
                 </div>
-                <a [routerLink]="['/test_plan', test_plan.id]" class="d-none d-sm-inline-block btn btn-outline-primary float-left">
+                <a [routerLink]="['/edit', 'test_plan', test_plan.id]" class="d-none d-sm-inline-block btn btn-outline-primary float-left">
                     <i class="fas fa-chevron-left fa-sm"></i>&nbsp;Back to Test Plan
                 </a>
                 <a class="btn btn-primary float-right" href="#" data-toggle="modal" data-target="#addTestCaseModal">

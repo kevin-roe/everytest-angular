@@ -1,5 +1,5 @@
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h3 class="h3 text-gray-800">{{product.name}} Workflows</h3>
+    <h3 class="h3 text-gray-800">Edit <strong>{{product.name}}</strong> Workflows</h3>
 </div>
 
 <!-- Workflows Card -->
@@ -25,7 +25,7 @@
                         <tbody>
                             <tr *ngFor="let workflow of workflows">
                                 <td>
-                                    <a [routerLink]="['/workflow', workflow.id]">{{workflow.name}}</a>
+                                    <a [routerLink]="['/edit', 'workflow', workflow.id]">{{workflow.name}}</a>
                                 </td>
                                 <td class="text-center">
                                     {{workflow.workflow_steps_count}}

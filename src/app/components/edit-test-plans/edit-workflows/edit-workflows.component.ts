@@ -9,11 +9,11 @@ import { TestPlanService } from 'src/app/services/test-plan.service';
 declare var $: any;
 
 @Component({
-  selector: 'app-workflows',
-  templateUrl: './workflows.component.html',
-  styleUrls: ['./workflows.component.css']
+  selector: 'app-edit-workflows',
+  templateUrl: './edit-workflows.component.html',
+  styleUrls: ['./edit-workflows.component.css']
 })
-export class WorkflowsComponent implements OnInit {
+export class EditWorkflowsComponent implements OnInit {
   product: Product
   workflows: Workflow[]
   addWorkflowForm: FormGroup;

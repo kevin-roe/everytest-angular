@@ -10,7 +10,7 @@ import { HttpService } from 'src/app/services/http.service';
 @Injectable({
   providedIn: 'root'
 })
-export class WorkflowStepsResolverService implements Resolve<[Product, Workflow, WorkflowStep[]]> {
+export class EditWorkflowStepsResolverService implements Resolve<[Product, Workflow, WorkflowStep[]]> {
 
   constructor(private http: HttpService) { }
 

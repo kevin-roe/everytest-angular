@@ -8,7 +8,7 @@ import { HttpService } from 'src/app/services/http.service';
 @Injectable({
   providedIn: 'root'
 })
-export class WorkflowsResolverService implements Resolve<[Product, Workflow[]]> {
+export class EditWorkflowsResolverService implements Resolve<[Product, Workflow[]]> {
 
   constructor(private http: HttpService) { }
 

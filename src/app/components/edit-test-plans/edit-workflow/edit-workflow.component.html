@@ -1,22 +1,20 @@
+
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h3 class="h3 text-gray-800">
-        {{testPlan.product.name}} / {{testPlan.platform.name}}
-    </h3>
-    <a href="#" data-toggle="modal" data-target="#editTestCaseModal" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-        class="fas fa-cog fa-sm text-white-50"></i>&nbsp;Edit Test Case</a>
+    <h3 class="h3 text-gray-800">Edit <strong>{{product.name}}</strong> Workflow</h3>
+    <a href="#" data-toggle="modal" data-target="#editWorkflowModal" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+        class="fas fa-cog fa-sm text-white-50"></i>&nbsp;Edit Workflow Name</a>
 </div>
 
 <div class="row justify-content-center">
     <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
         <div class="card o-hidden border-0 shadow-lg">
             <div class="card-header d-sm-flex align-items-center justify-content-between py-3">
-                <h6 class="m-0 font-weight-bold text-primary">{{testCase.name}}</h6>
-                <p class="m-0 text-{{testCase.mets_id | metsColor}}">{{testCase.mets_id | metsName}}</p>
+                <h6 class="m-0 font-weight-bold text-primary">{{workflow.name}} Workflow</h6>
             </div>
             <div class="card-body p-5">
                 <div class="table-responsive">
-                    <form id="update-test-steps-form" [formGroup]="testStepsForm" (ngSubmit)="onUpdateTestSteps()">
-                        <div formArrayName="testStepsFormArray" style="overflow-x:auto;">
+                    <form id="update-workflow-steps-form" [formGroup]="workflowStepsForm" (ngSubmit)="onUpdateWorkflowSteps()">
+                        <div formArrayName="workflowStepsFormArray" style="overflow-x:auto;">
                             <table class="table table-striped" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
@@ -37,19 +35,10 @@
                                             <div class="ml-3">{{control.value.order}}</div>
                                         </td>
                                         <td style="width: 80%;">
-                                            <input *ngIf="!control.get('is_workflow_step').value"
-                                                class="form-control form-control-sm" formControlName="action" 
-                                                (ngModelChange)="markAsDirty($event)" placeholder="New Test Step"
-                                            >
-                                            <div>
-                                                <select *ngIf="control.get('is_workflow_step').value" class="form-control form-control-sm" formControlName="workflow">
-                                                    <option *ngFor="let workflow of workflows" [value]="workflow.id">{{workflow.name}}</option>
-                                                </select>
-                                            </div>
-                                            
+                                            <input class="form-control form-control-sm" formControlName="action" (ngModelChange)="markAsDirty($event)">
                                         </td>
                                         <td style="width: 5%;">
-                                            <i *ngIf="notesPresent(control)" class="fas fa-check mt-2 ml-3"></i>
+                                            <i *ngIf="notesPresent(control)" class="far fa-thumbs-up mt-2 ml-3" (click)="debug()"></i>
                                             <!-- data-toggle="tooltip" data-placement="top" [title]="control.get('notes').value" -->
                                         </td>
                                         <td class="align-middle" style="width: 5%">
@@ -57,8 +46,6 @@
                                                 <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 </button>
                                                 <div class="dropdown-menu">
-                                                    <button *ngIf="!control.get('is_workflow_step').value" type="button" (click)="changeStep(control)" class="dropdown-item">Convert to Workflow</button>
-                                                    <button *ngIf="control.get('is_workflow_step').value" type="button" (click)="changeStep(control)" class="dropdown-item">Convert to Test Step</button>
                                                     <button type="button" class="dropdown-item" (click)="openNotesModal(i)" data-toggle="modal" data-target="#editNotesModal">Notes</button>
                                                     <button type="button" class="dropdown-item" (click)="removeStep(i)">Remove</button>
                                                 </div>
@@ -72,10 +59,10 @@
                 </div>
                 <div class="row">
                     <div class="col-12 mb-2">
-                        <a [routerLink]="['/test_suite', testSuite.id]" class="d-none d-sm-inline-block btn btn-outline-primary float-left">
-                            <i class="fas fa-chevron-left fa-sm"></i>&nbsp;Back to Test Suite
+                        <a [routerLink]="['/edit', 'product', product.id, 'workflows']" class="d-none d-sm-inline-block btn btn-outline-primary float-left">
+                            <i class="fas fa-chevron-left fa-sm"></i>&nbsp;Back to Workflows
                         </a>
-                        <button class="d-none d-sm-inline-block btn btn-outline-primary float-right" (click)="addTestStep()">
+                        <button class="d-none d-sm-inline-block btn btn-outline-primary float-right" (click)="addWorkflowStep()">
                             <i class="fas fa-plus"></i>
                             Add Step
                         </button>
@@ -83,29 +70,14 @@
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <button type="submit" [disabled]="!testStepsForm.dirty" 
-                        form="update-test-steps-form" class="d-none d-sm-inline-block btn btn-primary float-right">
+                        <button type="submit" [disabled]="!workflowStepsForm.dirty" 
+                        form="update-workflow-steps-form" class="d-none d-sm-inline-block btn btn-primary float-right">
                             {{submitButtonText}}
                         </button>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-
-<!-- Error Toast-->
-<div style="position: relative; z-index: 10;">
-    <div id="error-toast" class="toast" style="position: absolute; right: 0;">
-      <div class="toast-header">
-        <strong class="mr-auto text-danger">Error</strong>
-        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="toast-body">
-        All fields must have a value.
-      </div>
     </div>
 </div>
 
@@ -133,34 +105,20 @@
     </div>
 </div>
 
-<!-- Edit Test Case-->
-<div class="modal fade" id="editTestCaseModal" tabindex="-1" role="dialog" aria-hidden="true">
+<!-- Edit Workflow-->
+<div class="modal fade" id="editworkflowModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Edit Test Case: {{testCase.name}}</h5>
+                <h5 class="modal-title">Edit Workflow</h5>
                 <button (click)="deleteClicked = false" class="close" type="button" (click)="onCancel()" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form id="edit-form" [formGroup]="editTestCaseForm" (ngSubmit)="onEditTestCaseSubmit()">
+                <form id="edit-form" [formGroup]="editWorkflowForm" (ngSubmit)="onEditworkflowSubmit()">
                     <div class="form-group">
-                        <div class="row">
-                            <div class="col-md-6 mb-2">
-                                <label>Test Case Name</label>
-                                <input type="text" class="form-control" formControlName="name">
-                            </div>
-                            <div class="col-md-6 mb-2">
-                                <label for="platform">Select A METS Level</label>
-                                <select class="form-control" formControlName="mets">
-                                    <option value="1">Critical</option>
-                                    <option value="2">High</option>
-                                    <option value="3">Medium</option>
-                                    <option value="4">Low</option>
-                                </select>
-                            </div>
-                        </div>
+                        <input type="text" class="form-control" formControlName="name">
                     </div>
                 </form>
             </div>
@@ -168,7 +126,7 @@
                 <button class="btn btn-secondary" (click)="onCancel()" type="button" data-dismiss="modal">Cancel</button>
                 <button class="btn btn-primary" type="submit" form="edit-form">Edit</button>
                 <button *ngIf="!deleteClicked" (click)="deleteClicked = true" class="btn btn-danger" type="button">Delete</button>
-                <button *ngIf="deleteClicked" (click)="onDeleteTestCaseSubmit()" class="btn btn-danger" type="button">Are You Sure?</button>
+                <button *ngIf="deleteClicked" (click)="onDeleteworkflowSubmit()" class="btn btn-danger" type="button">Are You Sure?</button>
             </div>
         </div>
     </div>

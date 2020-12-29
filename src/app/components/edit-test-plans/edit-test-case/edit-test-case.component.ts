@@ -15,11 +15,11 @@ import { Workflow } from 'src/app/models/workflow.model';
 declare var $: any;
 
 @Component({
-  selector: 'app-test-case',
-  templateUrl: './test-case.component.html',
-  styleUrls: ['./test-case.component.css']
+  selector: 'app-edit-test-case',
+  templateUrl: './edit-test-case.component.html',
+  styleUrls: ['./edit-test-case.component.css']
 })
-export class TestCaseComponent implements OnInit {
+export class EditTestCaseComponent implements OnInit {
   workflows: Workflow[]
   testPlan: TestPlan
   testSuite: TestSuite

@@ -12,7 +12,7 @@ import { HttpService } from 'src/app/services/http.service';
 @Injectable({
   providedIn: 'root'
 })
-export class TestCaseResolverService implements Resolve<[Workflow[], TestPlan, TestSuite, TestCase, TestStep[]]> {
+export class EditTestCaseResolverService implements Resolve<[Workflow[], TestPlan, TestSuite, TestCase, TestStep[]]> {
 
   constructor(private http: HttpService) { }
   

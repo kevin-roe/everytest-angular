@@ -12,11 +12,11 @@ import { SpinnerService } from 'src/app/services/spinner.service';
 import { JQueryService } from 'src/app/services/j-query.service';
 
 @Component({
-  selector: 'app-workflow',
-  templateUrl: './workflow.component.html',
-  styleUrls: ['./workflow.component.css']
+  selector: 'app-edit-workflow',
+  templateUrl: './edit-workflow.component.html',
+  styleUrls: ['./edit-workflow.component.css']
 })
-export class WorkflowComponent implements OnInit {
+export class EditWorkflowComponent implements OnInit {
   product: Product
   workflow: Workflow
   workflowSteps: WorkflowStep[]

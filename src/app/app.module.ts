@@ -15,15 +15,16 @@ import { RegisterComponent } from './components/register/register.component';
 import { OrganizationSettingsComponent } from './components/organization/organization-settings/organization-settings.component';
 import { ProductsComponent } from './components/organization/products/products.component';
 import { PlatformsComponent } from './components/organization/platforms/platforms.component';
-import { TestPlanComponent } from './components/test-plan/test-plan.component';
-import { TestSuiteComponent } from './components/test-suite/test-suite.component';
-import { TestCaseComponent } from './components/test-case/test-case.component';
+import { EditTestPlanComponent } from './components/edit-test-plans/edit-test-plan/edit-test-plan.component';
+import { EditTestSuiteComponent } from './components/edit-test-plans/edit-test-suite/edit-test-suite.component';
+import { EditTestCaseComponent } from './components/edit-test-plans/edit-test-case/edit-test-case.component';
 import { MetsNamePipe } from './services/mets-name.pipe';
 import { MetsColorPipe } from './services/mets-color.pipe';
-import { WorkflowsComponent } from './components/workflows/workflows.component';
-import { WorkflowComponent } from './components/workflow/workflow.component';
+import { EditWorkflowsComponent } from './components/edit-test-plans/edit-workflows/edit-workflows.component';
+import { EditWorkflowComponent } from './components/edit-test-plans/edit-workflow/edit-workflow.component';
 import { UsersComponent } from './components/organization/users/users.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { TestPlanComponent } from './components/test-plan/test-plan.component';
 
 @NgModule({
   declarations: [
@@ -38,14 +39,15 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     OrganizationSettingsComponent,
     ProductsComponent,
     PlatformsComponent,
-    TestPlanComponent,
-    TestSuiteComponent,
-    TestCaseComponent,
+    EditTestPlanComponent,
+    EditTestSuiteComponent,
+    EditTestCaseComponent,
     MetsNamePipe,
     MetsColorPipe,
-    WorkflowsComponent,
-    WorkflowComponent,
-    UsersComponent
+    EditWorkflowsComponent,
+    EditWorkflowComponent,
+    UsersComponent,
+    TestPlanComponent
   ],
   imports: [
     BrowserModule,

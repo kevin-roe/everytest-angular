@@ -1,110 +1,27 @@
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h3 class="h3 text-gray-800">{{test_plan.product.name}} / {{test_plan.platform.name}}</h3>
-    <a href="#" data-toggle="modal" data-target="#editTestPlanModal" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-        class="fas fa-cog fa-sm text-white-50"></i>&nbsp;Edit Test Plan</a>
+<div class="d-sm-flex align-items-center justify-content-between mb-1">
+    <h3 class="h3 text-gray-800"><strong>{{test_plan.product.name}} / {{test_plan.platform.name}}</strong></h3>
+    <h4>Let's do this!</h4>
 </div>
+<a [routerLink]="['/edit', 'test_plan', test_plan.id]" class="btn btn-primary shadow-sm mb-4"><i
+    class="fas fa-cog fa-sm text-white-50"></i>
+    &nbsp;Edit Test Plan
+</a>
 
-<!-- Test Suites Card -->
-<div class="row justify-content-center">
-    <div class="col-lg-7 col-md-8 col-sm-10 col-xs-12">
-        <div class="card o-hidden border-0 shadow-lg">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Test Suites</h6>
-            </div>
-            <div class="card-body p-5">
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="testSuites-table" width="100%" cellspacing="0">
-                        <colgroup>
-                            <col span="1" style="width: 80%;">
-                            <col span="1" style="width: 20%;">
-                         </colgroup>
-                        <thead>
-                            <tr>
-                                <th>Test Suite Name</th>
-                                <th class="text-center">Test Cases</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let test_suite of test_suites">
-                                <td>
-                                    <a [routerLink]="['/test_suite', test_suite.id]">{{test_suite.name}}</a>
-                                </td>
-                                <td class="text-center">
-                                    {{test_suite.test_cases_count}}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <a class="btn btn-primary float-right" href="#" data-toggle="modal" data-target="#addTestSuiteModal">
-                    Add New Test Suite
-                </a>
-            </div>
+<div class="ml-3">
+    <div class="row">
+        <div class="col-3-lg col-4-md col-5-sm col-6-xs mr-2 mb-2">
+            <select class="form-control" (change)="onTestSuiteChange($event.target.value)">
+                <option disabled selected value="">Select a Test Suite</option>
+                <option *ngFor="let test_suite of test_suites" [value]="test_suite.id">{{test_suite.name}}</option>
+            </select>
+        </div>
+        <div class="col-3-lg col-4-md col-5-sm col-6-xs">
+            <select *ngIf="test_cases.length > 1" class="form-control" (change)="onTestCaseChange($event.target.value)">
+                <option disabled selected value="">Select a Test Case</option>
+                <option *ngFor="let test_case of test_cases" [value]="test_case.id">{{test_case.name}}</option>
+            </select>
         </div>
     </div>
-</div>
 
-<!-- Edit Test Plan-->
-<div class="modal fade" id="editTestPlanModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Edit Test Plan</h5>
-                <button (click)="deleteClicked = false" class="close" type="button" (click)="onCancel()" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="edit-test-plan-form" [formGroup]="editTestPlanForm" (ngSubmit)="onEditTestPlanSubmit()"> 
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-md-6 mb-2">
-                                <label for="product">Select A Product</label>
-                                <select class="form-control" id="product" formControlName="product">
-                                    <option *ngFor="let product of testPlanService.products" [value]="product.id">{{product.name}}</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6 mb-2">
-                                <label for="platform">Select A Platform</label>
-                                <select class="form-control" id="platform" formControlName="platform">
-                                    <option *ngFor="let platform of testPlanService.platforms" [value]="platform.id">{{platform.name}}</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" (click)="onCancel()">Cancel</button>
-                <button class="btn btn-primary" type="submit" form="edit-test-plan-form">Edit</button>
-                <button *ngIf="!deleteClicked" (click)="deleteClicked = true" class="btn btn-danger" type="button">Delete</button>
-                <button *ngIf="deleteClicked" (click)="deleteTestPlan()" class="btn btn-danger" type="button">Are You Sure?</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Add New Test Suite-->
-<div class="modal fade" id="addTestSuiteModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Add a New Test Suite</h5>
-                <button class="close" type="button" (click)="onCancel()" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="add-form" [formGroup]="addTestSuiteForm" (ngSubmit)="onAddTestSuiteSubmit()">
-                    <div class="form-group">
-                        <input type="text" class="form-control" formControlName="addField">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" (click)="onCancel()">Cancel</button>
-                <button class="btn btn-primary" type="submit" form="add-form">Add</button>
-            </div>
-        </div>
-    </div>
+    <p>Test Case Id: {{test_case_id}}</p>
 </div>

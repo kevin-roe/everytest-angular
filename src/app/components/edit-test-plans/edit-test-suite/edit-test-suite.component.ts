@@ -10,11 +10,11 @@ import { HttpService } from 'src/app/services/http.service';
 declare var $: any;
 
 @Component({
-  selector: 'app-test-suite',
-  templateUrl: './test-suite.component.html',
-  styleUrls: ['./test-suite.component.css']
+  selector: 'edit-app-test-suite',
+  templateUrl: './edit-test-suite.component.html',
+  styleUrls: ['./edit-test-suite.component.css']
 })
-export class TestSuiteComponent implements OnInit {
+export class EditTestSuiteComponent implements OnInit {
   test_plan: TestPlan
   test_suite: TestSuite
   test_cases: TestCase[]
