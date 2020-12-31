@@ -1,3 +1,18 @@
+<!-- Error Toast-->
+<div style="position: relative; z-index: 10;">
+    <div id="success-toast" class="toast" style="position: absolute; right: 0;">
+      <div class="toast-header">
+        <strong class="mr-auto text-success">Saved!</strong>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="toast-body">
+        Test Run has been saved!
+      </div>
+    </div>
+</div>
+
 <div class="d-sm-flex align-items-center justify-content-between mb-1">
     <h3 class="h3 text-gray-800"><strong>{{test_plan.product.name}} / {{test_plan.platform.name}}</strong></h3>
     <h4>Let's do this!</h4>
@@ -9,19 +24,80 @@
 
 <div class="ml-3">
     <div class="row">
-        <div class="col-3-lg col-4-md col-5-sm col-6-xs mr-2 mb-2">
-            <select class="form-control" (change)="onTestSuiteChange($event.target.value)">
-                <option disabled selected value="">Select a Test Suite</option>
-                <option *ngFor="let test_suite of test_suites" [value]="test_suite.id">{{test_suite.name}}</option>
-            </select>
+        <h4 *ngIf="test_suites.length == 0">Data much empty!</h4>
+
+        <div *ngIf="test_suites.length > 0" class="col-3-lg col-4-md col-5-sm col-5-xs mr-2 mt-2">
+            <div>
+                <label>Select a Test Suite</label>
+                <select class="form-control" [(ngModel)]="selectedTestSuite" (change)="onTestSuiteChange($event.target.value)">
+                    <option disabled selected value="">Select a Test Suite</option>
+                    <option *ngFor="let test_suite of test_suites" [value]="test_suite.id">{{test_suite.name}}</option>
+                </select>
+            </div>
         </div>
-        <div class="col-3-lg col-4-md col-5-sm col-6-xs">
-            <select *ngIf="test_cases.length > 1" class="form-control" (change)="onTestCaseChange($event.target.value)">
-                <option disabled selected value="">Select a Test Case</option>
-                <option *ngFor="let test_case of test_cases" [value]="test_case.id">{{test_case.name}}</option>
-            </select>
+        <div class="col-3-lg col-4-md col-5-sm col-5-xs mr-2 mt-2">
+            <div *ngIf="test_cases.length > 0">
+                <label>Select a Test Case</label>
+                <select class="form-control" [(ngModel)]="selectedTestCase">
+                    <option disabled selected value=""></option>
+                    <option *ngFor="let test_case of test_cases" [value]="test_case.id">{{test_case.name}}</option>
+                </select>
+            </div>
+        </div>
+        <div *ngIf="selectedTestCase != null" class="col-1-lg col-1-md col-2-sm col-2-xs mt-2 align-self-end">
+            <button class="btn btn-primary btn-lrg" (click)="setTestRun()">Go!</button>
         </div>
     </div>
 
-    <p>Test Case Id: {{test_case_id}}</p>
+    <div *ngIf="test_run_selected" class="table-responsive mt-4">
+        <form [formGroup]="testRunForm" (ngSubmit)="onCreateTestRun()">
+            <div formArrayName="testRunFormArray" style="overflow-x:auto;">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                        <th class="text-center">Order</th>
+                        <th>Action</th>
+                        <th>Notes</th>
+                        <th>Result</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let control of getControls(); let i=index" [formGroupName]="i">
+                            <td class="text-center" style="width: 5%;">
+                                {{control.value.order}}
+                            </td>
+                            <td style="width: 40%;">
+                                {{control.value.action}}
+                            </td>
+                            <td style="width: 35%;">
+                                {{control.value.notes}}
+                            </td>
+                            <td style="width: 20%;">
+                                <div class="btn-toolbar">
+                                    <button type="button" id="pass{{i}}" (click)="setPass(i)" 
+                                        class="btn btn{{control.value.result == 1 ? '' : '-outline'}}-success mr-2">
+                                        Pass
+                                    </button>
+                                    <button type="button" id="fail{{i}}" (click)="setFail(i)"
+                                        class="btn btn{{control.value.result == 2 ? '' : '-outline'}}-danger">
+                                        Fail
+                                    </button>
+                                </div>
+                                <!-- <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" id="pass{{control.value.order}}" value="1" formControlName="result">
+                                    <label class="form-check-label" for="pass{{control.value.order}}">PASS</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" id="fail{{control.value.order}}" value="2" formControlName="result">
+                                    <label class="form-check-label" for="fail{{control.value.order}}">FAIL</label>
+                                </div> -->
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <button type="submit" class="btn btn-primary float-right">Submit</button>
+        </form>
+    </div>
+
 </div>

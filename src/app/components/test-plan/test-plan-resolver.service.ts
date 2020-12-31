@@ -14,7 +14,7 @@ export class TestPlanResolverService implements Resolve<[TestPlan, TestSuite[]]>
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<[TestPlan, TestSuite[]]> {
     let test_plan = this.http.get<TestPlan>(`test_plans/${route.paramMap.get('id')}`);
-    let test_suites = this.http.get<TestSuite[]>(`test_plans/${route.paramMap.get('id')}/test_suites`)
+    let test_suites = this.http.get<TestSuite[]>(`test_plans/${route.paramMap.get('id')}/test_suites?with_test_cases=true`)
     return forkJoin([test_plan, test_suites])
   }  
 }

@@ -226,7 +226,7 @@ export class EditTestCaseComponent implements OnInit {
     this.http.delete(`test_cases/${this.testCase.id}`).subscribe(
       () => {
         this.jQuery.hideModal("editTestCaseModal");
-        this.router.navigate(['/test_suite', this.testSuite.id])
+        this.router.navigate(['/edit', 'test_suite', this.testSuite.id])
       }, error => {
         alert("Error!!!")
       }

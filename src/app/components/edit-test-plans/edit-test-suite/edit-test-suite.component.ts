@@ -71,7 +71,7 @@ export class EditTestSuiteComponent implements OnInit {
     this.http.delete(`test_suites/${this.test_suite.id}`).subscribe(
       () => {
         $("#editTestSuiteModal").modal('hide');
-        this.router.navigate(['/test_plan', this.test_plan.id])
+        this.router.navigate(['/edit','test_plan', this.test_plan.id])
       }, error => {
         alert("Error!!!")
       }
