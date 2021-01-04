@@ -138,13 +138,17 @@ export class TestPlanComponent implements OnInit {
   }
 
   setPass(index: number) {
-    this.getControls().forEach((control, i) => {
-      if (index >= i) {
-        if (control.get("result").value == null) {
-          control.get("result").patchValue(1);
+    if (this.getControls()[index].get("result").value == 2) {
+      this.getControls()[index].get("result").patchValue(1)
+    } else {
+      this.getControls().forEach((control, i) => {
+        if (index >= i) {
+          if (control.get("result").value == null) {
+            control.get("result").patchValue(1);
+          }
         }
-      } 
-    })
+      })
+    }
   }
 
   setFail(index: number) {
