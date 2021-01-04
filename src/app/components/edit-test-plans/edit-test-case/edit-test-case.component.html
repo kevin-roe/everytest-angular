@@ -44,11 +44,11 @@
                                 </thead>
                                 <tbody  cdkDropList (cdkDropListDropped)="drop($event)">
                                     <tr *ngFor="let control of getControls(); let i=index" [formGroupName]="i" cdkDrag cdkDragLockAxis="y">
-                                        <td class="align-middle" style="width: 5%;" cdkDragHandle class="pointer-handle">
-                                            <i class="fas fa-bars mt-2 ml-2"></i>
+                                        <td align="center" style="width: 5%" cdkDragHandle class="align-middle pointer-handle">
+                                            <i class="fas fa-bars"></i>
                                         </td>
-                                        <td class="align-middle" style="width: 5%;">
-                                            <div class="ml-3">{{control.value.order}}</div>
+                                        <td align="center" style="width: 5%" class="align-middle">
+                                            <div>{{control.value.order}}</div>
                                         </td>
                                         <td style="width: 80%;">
                                             <input *ngIf="!control.get('is_workflow_step').value"
@@ -62,12 +62,12 @@
                                             </div>
                                             
                                         </td>
-                                        <td style="width: 5%;">
-                                            <i *ngIf="notesPresent(control)" class="fas fa-check mt-2 ml-3"></i>
+                                        <td align="center" style="width: 5%" class="align-middle">
+                                            <i *ngIf="notesPresent(control)" class="fas fa-check"></i>
                                             <!-- data-toggle="tooltip" data-placement="top" [title]="control.get('notes').value" -->
                                         </td>
-                                        <td style="width: 5%">
-                                            <i style="cursor: pointer;" class="fas fa-ellipsis-h mt-2 ml-4"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <td align="center" style="width: 5%" class="align-middle">
+                                            <i style="cursor: pointer;" class="fas fa-ellipsis-h"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             </i>
                                             <div class="dropdown-menu">
                                                 <button *ngIf="!control.get('is_workflow_step').value" type="button" (click)="changeStep(control)" class="dropdown-item">Convert to Workflow</button>
