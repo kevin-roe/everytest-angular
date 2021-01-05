@@ -28,20 +28,29 @@
                                 </thead>
                                 <tbody  cdkDropList (cdkDropListDropped)="drop($event)">
                                     <tr *ngFor="let control of getControls(); let i=index" [formGroupName]="i" cdkDrag cdkDragLockAxis="y">
-                                        <td class="align-middle" style="width: 5%;" cdkDragHandle class="pointer-handle">
-                                            <i class="fas fa-bars mt-2 ml-2"></i>
+                                        <td align="center" class="align-middle pointer-handle" style="width: 5%;" cdkDragHandle>
+                                            <i class="fas fa-bars"></i>
                                         </td>
-                                        <td class="align-middle" style="width: 5%;">
-                                            <div class="ml-3">{{control.value.order}}</div>
+                                        <td align="center" style="width: 5%" class="align-middle">
+                                            <div>{{control.value.order}}</div>
                                         </td>
                                         <td style="width: 80%;">
                                             <input class="form-control form-control-sm" formControlName="action" (ngModelChange)="markAsDirty($event)">
                                         </td>
-                                        <td style="width: 5%;">
-                                            <i *ngIf="notesPresent(control)" class="far fa-thumbs-up mt-2 ml-3" (click)="debug()"></i>
+                                        <td align="center" style="width: 5%" class="align-middle">
+                                            <i *ngIf="notesPresent(control)" class="fas fa-check" (click)="debug()"></i>
                                             <!-- data-toggle="tooltip" data-placement="top" [title]="control.get('notes').value" -->
                                         </td>
-                                        <td class="align-middle" style="width: 5%">
+                                        <td align="center" style="width: 5%" class="align-middle">
+                                            <i style="cursor: pointer;" class="fas fa-ellipsis-h"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            </i>
+                                            <div class="dropdown-menu">
+                                                <button type="button" class="dropdown-item" (click)="openNotesModal(i)" data-toggle="modal" data-target="#editNotesModal">Notes</button>
+                                                <button type="button" class="dropdown-item" (click)="removeStep(i)">Remove</button>
+
+                                            </div>
+                                        </td>
+                                        <!-- <td align="center" style="width: 5%" class="align-middle">
                                             <div class="btn-group ml-2">
                                                 <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 </button>
@@ -50,7 +59,7 @@
                                                     <button type="button" class="dropdown-item" (click)="removeStep(i)">Remove</button>
                                                 </div>
                                             </div>
-                                        </td>
+                                        </td> -->
                                     </tr>
                                 </tbody>
                             </table>
