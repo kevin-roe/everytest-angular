@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,6 +7,7 @@ import { TestSuite } from 'src/app/models/test-suite.model';
 import { TestPlanRequest } from 'src/app/requests/test-plan.request';
 import { TestSuiteRequest } from 'src/app/requests/test-suite.request';
 import { HttpService } from 'src/app/services/http.service';
+import { JQueryService } from 'src/app/services/j-query.service';
 import { TestPlanService } from 'src/app/services/test-plan.service';
 declare var $: any;
 
@@ -21,7 +23,7 @@ export class EditTestPlanComponent implements OnInit {
   addTestSuiteForm: FormGroup;
   deleteClicked = false
 
-  constructor(private route: ActivatedRoute, private http: HttpService, public testPlanService: TestPlanService, private router: Router) { }
+  constructor(private route: ActivatedRoute, private http: HttpService, public testPlanService: TestPlanService, private router: Router, private jQuery: JQueryService) { }
 
   ngOnInit(): void {
     this.route.data.subscribe(data => {
@@ -29,6 +31,8 @@ export class EditTestPlanComponent implements OnInit {
       this.test_suites = data.test_plan[1]
 
       this.initForms()
+
+      this.initModalOnHide()
     })
   }
 
@@ -38,7 +42,21 @@ export class EditTestPlanComponent implements OnInit {
       'platform': new FormControl(this.test_plan.platform.id, [Validators.required]),
     })
     this.addTestSuiteForm = new FormGroup({
-      'addField': new FormControl(null, [Validators.required]),
+      'addField': new FormControl(null, [Validators.required, Validators.minLength(3)]),
+    });
+  }
+
+  private initModalOnHide() {
+    this.jQuery.onModalHide("editTestPlanModal", () => {
+      this.editTestPlanForm.reset();
+      this.editTestPlanForm.get('product').setValue(this.test_plan.product.id)
+      this.editTestPlanForm.get('platform').setValue(this.test_plan.platform.id)
+      this.deleteClicked = false
+    });
+
+    this.jQuery.onModalHide("addTestSuiteModal", () => {
+      this.addTestSuiteForm.reset();
+      this.deleteClicked = false
     });
   }
 
@@ -53,20 +71,11 @@ export class EditTestPlanComponent implements OnInit {
         this.test_plan = data
         this.testPlanService.updateTestPlan(data)
         this.testPlanService.updateSideNavMenu()
-        $("#editTestPlanModal").modal('hide');
-      }, errors => {
-        alert("Error! (Need to handle these better...)") //TODO: Handle errors
+        this.jQuery.hideModal("editTestPlanModal")
+      }, (e: HttpErrorResponse) => {
+        this.editTestPlanForm.setErrors({msg: e.error[0].replace("Product", "Test Plan")})
       }
     )
-  }
-
-  onCancel() {
-    this.editTestPlanForm.get('product').setValue(this.test_plan.product.id)
-    this.editTestPlanForm.get('platform').setValue(this.test_plan.platform.id)
-    $("#editTestPlanModal").modal('hide');
-    this.addTestSuiteForm.reset()
-    $("#addTestSuiteModal").modal('hide');
-    this.deleteClicked = false
   }
 
   deleteTestPlan() {
@@ -74,10 +83,15 @@ export class EditTestPlanComponent implements OnInit {
       () => {
         this.testPlanService.deleteTestPlan(this.test_plan.id)
         this.testPlanService.updateSideNavMenu()
-        $("#editTestPlanModal").modal('hide');
+        this.jQuery.hideModal("editTestPlanModal")
         this.router.navigate(['/dashboard'])
-      }, errors => {
-        alert("Error! (Need to handle these better...)") //TODO: Handle errors
+      }, (e: HttpErrorResponse) => {
+        if (e.status == 409) {
+          this.editTestPlanForm.setErrors({msg: "Unable to delete this test plan until all existing test suites, test cases, etc are deleted."})
+        } else {
+          this.editTestPlanForm.setErrors({msg: "An unknown error has occured."})
+        }
+        this.deleteClicked = false
       }
     )
   }
@@ -90,21 +104,10 @@ export class EditTestPlanComponent implements OnInit {
     this.http.post<TestSuite>(`test_suites`, req).subscribe(
       data => {
         this.test_suites.push(data)
-        this.addTestSuiteForm.reset();
-        $("#addTestSuiteModal").modal('hide');
-      }, errors => {
-        alert("Error! (Need to handle these better...)") //TODO: Handle errors
+        this.jQuery.hideModal("addTestSuiteModal")
+      }, (e: HttpErrorResponse) => {
+        this.addTestSuiteForm.setErrors({ msg: e.error[0] })
       }
     )
   }
-
-
-
-
-
-
-
-
-
-
 }

@@ -1,8 +1,10 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TestPlan } from 'src/app/models/test-plan.model';
 import { TestPlanRequest } from 'src/app/requests/test-plan.request';
 import { HttpService } from 'src/app/services/http.service';
+import { JQueryService } from 'src/app/services/j-query.service';
 import { TestPlanService } from 'src/app/services/test-plan.service';
 declare var $: any;
 
@@ -14,10 +16,11 @@ declare var $: any;
 export class SidebarComponent implements OnInit {
   addTestPlanForm: FormGroup;
 
-  constructor(private http: HttpService, public testPlanService: TestPlanService) { }
+  constructor(private http: HttpService, public testPlanService: TestPlanService, private jQuery: JQueryService) { }
 
   ngOnInit(): void {
     this.initForm();
+    this.initModalOnHide();
   }
 
   private initForm() {
@@ -27,9 +30,10 @@ export class SidebarComponent implements OnInit {
     });
   }
 
-  onCancel() {
-    this.addTestPlanForm.reset();
-    $("#addTestPlanModal").modal('hide');
+  private initModalOnHide() {
+    this.jQuery.onModalHide("addTestPlanModal", () => {
+      this.addTestPlanForm.reset();
+    });
   }
 
   onSubmit() {
@@ -40,10 +44,9 @@ export class SidebarComponent implements OnInit {
     this.http.post<TestPlan>(`test_plans`, req).subscribe(
       data => {
         this.testPlanService.addToFormattedTestPlans(data)
-        this.addTestPlanForm.reset()
-        $("#addTestPlanModal").modal('hide');
-      }, () => {
-        alert("Error!") // TODO: Handle this better
+        this.jQuery.hideModal("addTestPlanModal")
+      }, (e: HttpErrorResponse) => {
+        this.addTestPlanForm.setErrors({msg: e.error[0].replace("Product", "Test Plan")})
       }
     )
   }

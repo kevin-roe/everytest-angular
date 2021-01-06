@@ -33,7 +33,7 @@ export class TestPlanComponent implements OnInit {
     private route: ActivatedRoute,
     private http: HttpService,
     private authService: AuthService,
-    private jquery: JQueryService,
+    private jQuery: JQueryService,
     private spinner: SpinnerService ) { }
 
   ngOnInit(): void {
@@ -92,7 +92,7 @@ export class TestPlanComponent implements OnInit {
   onCreateTestRun() {
     for (let c of this.getControls()) {
       if (c.get("result").value == null) {
-        alert("All test steps must have a result")
+        this.testRunForm.setErrors({msg: "All test steps must have a result!"})
         return;
       }
     }
@@ -129,9 +129,9 @@ export class TestPlanComponent implements OnInit {
       this.getControls().forEach(c => {
         c.get("result").patchValue(null)
       })
-      this.jquery.toast("success-toast", 3000)
+      this.jQuery.toast("success-toast", 3000)
     }, () => {
-        alert("Could not save test run!")
+      this.testRunForm.setValue({msg: "An unknown error has occured."})
     }).add(() => {
       this.spinner.stop();
     });

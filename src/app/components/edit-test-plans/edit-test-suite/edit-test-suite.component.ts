@@ -7,6 +7,7 @@ import { TestSuite } from 'src/app/models/test-suite.model';
 import { TestCaseRequest } from 'src/app/requests/test-case.request';
 import { TestSuiteRequest } from 'src/app/requests/test-suite.request';
 import { HttpService } from 'src/app/services/http.service';
+import { JQueryService } from 'src/app/services/j-query.service';
 declare var $: any;
 
 @Component({
@@ -22,7 +23,7 @@ export class EditTestSuiteComponent implements OnInit {
   addTestCaseForm: FormGroup
   deleteClicked = false
 
-  constructor(private route: ActivatedRoute, private http: HttpService, public router: Router) { }
+  constructor(private route: ActivatedRoute, private http: HttpService, public router: Router, private jQuery: JQueryService) { }
 
   ngOnInit(): void {
     this.route.data.subscribe(data => {
@@ -31,25 +32,31 @@ export class EditTestSuiteComponent implements OnInit {
       this.test_cases = data.test_suite[2]
 
       this.initForms()
+
+      this.initModalJquery();
     })
   }
 
-  initForms() {
+  private initForms() {
     this.editTestSuiteForm = new FormGroup({
-      'name': new FormControl(this.test_suite.name, [Validators.required]),
+      'name': new FormControl(this.test_suite.name, [Validators.required, Validators.minLength(3)]),
     })
     this.addTestCaseForm = new FormGroup({
-      'name': new FormControl(null, [Validators.required]),
+      'name': new FormControl(null, [Validators.required, Validators.minLength(3)]),
       'mets': new FormControl(null, [Validators.required]),
     });
   }
 
-  onCancel() {
-    this.editTestSuiteForm.get('name').setValue(this.test_suite.name)
-    $("#editTestSuiteModal").modal('hide');
-    this.addTestCaseForm.reset();
-    this.deleteClicked = false;
-    $("#addTestCaseModal").modal('hide');
+  private initModalJquery() {
+    this.jQuery.onModalHide("editTestSuiteModal", () => {
+      this.editTestSuiteForm.controls.name.setValue(this.test_suite.name)
+      this.deleteClicked = false
+    });
+
+    this.jQuery.onModalHide("addTestCaseModal", () => {
+      this.addTestCaseForm.reset();
+      this.deleteClicked = false
+    });
   }
 
   onEditTestSuiteSubmit() {
@@ -60,9 +67,9 @@ export class EditTestSuiteComponent implements OnInit {
     this.http.put<TestSuite>(`test_suites/${this.test_suite.id}`, req).subscribe(
       data => {
         this.test_suite = data
-        $("#editTestSuiteModal").modal('hide');
-      }, error => {
-        alert("ERROR!!!")
+        this.jQuery.hideModal("editTestSuiteModal");
+      }, e => {
+        this.editTestSuiteForm.setErrors({msg: e.error[0]})
       }
     )
   }
@@ -70,10 +77,15 @@ export class EditTestSuiteComponent implements OnInit {
   onDeleteTestSuiteSubmit() {
     this.http.delete(`test_suites/${this.test_suite.id}`).subscribe(
       () => {
-        $("#editTestSuiteModal").modal('hide');
+        this.jQuery.hideModal("editTestSuiteModal");
         this.router.navigate(['/edit','test_plan', this.test_plan.id])
-      }, error => {
-        alert("Error!!!")
+      }, e => {
+        if (e.status == 409) {
+          this.editTestSuiteForm.setErrors({msg: "Unable to delete this test suite until all existing test cases and test steps are deleted."})
+        } else {
+          this.editTestSuiteForm.setErrors({msg: "An unknown error has occured."})
+        }
+        this.deleteClicked = false
       }
     )
   }
@@ -87,12 +99,10 @@ export class EditTestSuiteComponent implements OnInit {
     this.http.post<TestCase>(`test_cases`, req).subscribe(
       data => {
         this.test_cases.push(data)
-        this.addTestCaseForm.reset();
-        $("#addTestCaseModal").modal('hide');
-      }, error => {
-        alert("Error!")
+        this.jQuery.hideModal("addTestCaseModal")
+      }, e => {
+        this.addTestCaseForm.setErrors({msg: e.error[0]})
       }
     )
   }
-
 }

@@ -75,7 +75,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Add New Test Plan</h5>
-                <button class="close" type="button" (click)="onCancel()" aria-label="Close">
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
@@ -83,25 +83,28 @@
                 <form id="add-test-plan-form" [formGroup]="addTestPlanForm" (ngSubmit)="onSubmit()"> 
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-md-6 mb-2">
+                            <div class="col-md-6">
                                 <label for="product">Select A Product</label>
                                 <select class="form-control" id="product" formControlName="product">
                                     <option *ngFor="let product of testPlanService.products" [value]="product.id">{{product.name}}</option>
                                 </select>
                             </div>
-                            <div class="col-md-6 mb-2">
+                            <div class="col-md-6">
                                 <label for="platform">Select A Platform</label>
                                 <select class="form-control" id="platform" formControlName="platform">
                                     <option *ngFor="let platform of testPlanService.platforms" [value]="platform.id">{{platform.name}}</option>
                                 </select>
                             </div>
                         </div>
+                        <span class="error-msg text-danger float-right mt-2" *ngIf="addTestPlanForm.errors != null">
+                            {{addTestPlanForm.errors?.msg}}
+                        </span>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" (click)="onCancel()">Cancel</button>
-                <button class="btn btn-primary" type="submit" form="add-test-plan-form">Save</button>
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" type="submit" form="add-test-plan-form" [disabled]="addTestPlanForm.invalid">Save</button>
             </div>
         </div>
     </div>

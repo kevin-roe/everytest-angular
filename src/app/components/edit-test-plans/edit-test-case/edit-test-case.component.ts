@@ -45,7 +45,8 @@ export class EditTestCaseComponent implements OnInit {
     private http: HttpService,
     public router: Router,
     private jQuery: JQueryService,
-    private spinner: SpinnerService) { }
+    private spinner: SpinnerService,
+  ) { }
 
   ngOnInit(): void {
     this.route.data.subscribe(data => {
@@ -55,7 +56,9 @@ export class EditTestCaseComponent implements OnInit {
       this.testCase = data.test_case[3]
       this.testSteps = data.test_case[4]
 
-      this.initForms()
+      this.initForms();
+
+      this.initModalJquery();
     })
   }
 
@@ -69,7 +72,7 @@ export class EditTestCaseComponent implements OnInit {
 
   initForms() {
     this.editTestCaseForm = new FormGroup({
-      name: new FormControl(this.testCase.name, [Validators.required]),
+      name: new FormControl(this.testCase.name, [Validators.required, Validators.minLength(3)]),
       mets: new FormControl(this.testCase.mets_id, [Validators.required])
     })
 
@@ -90,6 +93,14 @@ export class EditTestCaseComponent implements OnInit {
         notes: new FormControl(s.notes)
       }))
     })
+  }
+
+  initModalJquery() {
+    this.jQuery.onModalHide("editTestCaseModal", () => {
+      this.editTestCaseForm.controls.name.setValue(this.testCase.name)
+      this.editTestCaseForm.controls.mets.setValue(this.testCase.mets_id)
+      this.deleteClicked = false
+    });
   }
 
   addTestStep() {
@@ -170,7 +181,7 @@ export class EditTestCaseComponent implements OnInit {
         this.testStepsForm.markAsPristine()
         this.submitButtonText = "Saved!"
       }, err => {
-        alert("could not save!")
+        this.testStepsForm.setErrors({msg: "An unknown error has occured."})
       }
     ).add(() => {
       this.spinner.stop();
@@ -198,14 +209,6 @@ export class EditTestCaseComponent implements OnInit {
     }
   }
 
-  onCancel() {
-    this.editTestCaseForm.get('name').setValue(this.testCase.name)
-    this.jQuery.hideModal("editTestCaseModal");
-
-    this.notes = "";
-    this.jQuery.hideModal("editNotesModal");
-  }
-
   onEditTestCaseSubmit() {
     let req: TestCaseRequest = {
       test_suite_id: this.testSuite.id,
@@ -216,8 +219,8 @@ export class EditTestCaseComponent implements OnInit {
       data => {
         this.testCase = data
         this.jQuery.hideModal("editTestCaseModal");
-      }, error => {
-        alert("ERROR!!!")
+      }, e => {
+        this.editTestCaseForm.setErrors({msg: e.error[0]})
       }
     )
   }
@@ -227,8 +230,13 @@ export class EditTestCaseComponent implements OnInit {
       () => {
         this.jQuery.hideModal("editTestCaseModal");
         this.router.navigate(['/edit', 'test_suite', this.testSuite.id])
-      }, error => {
-        alert("Error!!!")
+      }, e => {
+        if (e.status == 409) {
+          this.editTestCaseForm.setErrors({msg: "Unable to delete this test plan until all existing test steps are deleted."})
+        } else {
+          this.editTestCaseForm.setErrors({msg: "An unknown error has occured."})
+        }
+        this.deleteClicked = false
       }
     )
   }

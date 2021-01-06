@@ -53,7 +53,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Edit Test Plan</h5>
-                <button (click)="deleteClicked = false" class="close" type="button" (click)="onCancel()" aria-label="Close">
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
@@ -74,12 +74,15 @@
                                 </select>
                             </div>
                         </div>
+                        <span class="error-msg text-danger float-right mt-2" *ngIf="editTestPlanForm.errors != null">
+                            {{editTestPlanForm.errors.msg}}
+                        </span>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" (click)="onCancel()">Cancel</button>
-                <button class="btn btn-primary" type="submit" form="edit-test-plan-form">Edit</button>
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" type="submit" form="edit-test-plan-form" [disabled]="editTestPlanForm.invalid">Save</button>
                 <button *ngIf="!deleteClicked" (click)="deleteClicked = true" class="btn btn-danger" type="button">Delete</button>
                 <button *ngIf="deleteClicked" (click)="deleteTestPlan()" class="btn btn-danger" type="button">Are You Sure?</button>
             </div>
@@ -93,7 +96,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Add a New Test Suite</h5>
-                <button class="close" type="button" (click)="onCancel()" aria-label="Close">
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
@@ -101,12 +104,16 @@
                 <form id="add-form" [formGroup]="addTestSuiteForm" (ngSubmit)="onAddTestSuiteSubmit()">
                     <div class="form-group">
                         <input type="text" class="form-control" formControlName="addField">
+                        <small class="form-text text-muted">Minimum 3 characters</small>
+                        <span class="error-msg text-danger float-right mt-2" *ngIf="addTestSuiteForm.errors != null">
+                            {{addTestSuiteForm.errors.msg}}
+                        </span>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" (click)="onCancel()">Cancel</button>
-                <button class="btn btn-primary" type="submit" form="add-form">Add</button>
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" type="submit" form="add-form" [disabled]="addTestSuiteForm.invalid">Add</button>
             </div>
         </div>
     </div>

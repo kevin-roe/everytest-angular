@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { forkJoin, Observable, of } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
 import { TestPlan } from 'src/app/models/test-plan.model';
 import { TestSuite } from 'src/app/models/test-suite.model';
 import { HttpService } from 'src/app/services/http.service';

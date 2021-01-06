@@ -49,9 +49,9 @@ export class EditWorkflowComponent implements OnInit {
       this.workflowSteps = data.workflowSteps[2]
 
       this.initForm()
-    })
 
-    this.jQuery.initTooltips()
+      this.initModalJquery();
+    })
   }
 
   getControls() : AbstractControl[] {
@@ -79,6 +79,12 @@ export class EditWorkflowComponent implements OnInit {
         notes: new FormControl(s.notes)
       }))
     })
+  }
+
+  initModalJquery() {
+    this.jQuery.onModalHide("editworkflowModal", () => {
+      this.editWorkflowForm.controls.name.setValue(this.workflow.name)
+    });
   }
 
   addWorkflowStep() {
@@ -118,7 +124,7 @@ export class EditWorkflowComponent implements OnInit {
   onUpdateWorkflowSteps() {    
     for(let f of this.getControls()) {
       if (f.get('action').invalid) {
-        alert("All Steps must have a valid action!")
+        this.workflowStepsForm.setErrors({msg: "All steps must have a valid action!"})
         return;
       }
     }
@@ -140,7 +146,7 @@ export class EditWorkflowComponent implements OnInit {
         this.workflowStepsForm.markAsPristine()
         this.submitButtonText = "Saved!"
       }, err => {
-        alert("could not save!")
+        this.workflowStepsForm.setErrors({msg: "An unknown error has occured"})
       }
     ).add(() => {
       this.spinner.stop();
@@ -168,14 +174,6 @@ export class EditWorkflowComponent implements OnInit {
     }
   }
 
-  onCancel() {
-    this.editWorkflowForm.get('name').setValue(this.workflow.name)
-    this.jQuery.hideModal("editworkflowModal");
-
-    this.notes = "";
-    this.jQuery.hideModal("editNotesModal");
-  }
-
   onEditworkflowSubmit() {
     let req: WorkflowRequest = {
       product_id: this.product.id,
@@ -185,8 +183,8 @@ export class EditWorkflowComponent implements OnInit {
       data => {
         this.workflow = data
         this.jQuery.hideModal("editworkflowModal");
-      }, error => {
-        alert("ERROR!!!")
+      }, e => {
+        this.editWorkflowForm.setErrors({msg: e.error[0]})
       }
     )
   }
@@ -195,9 +193,14 @@ export class EditWorkflowComponent implements OnInit {
     this.http.delete(`workflows/${this.workflow.id}`).subscribe(
       () => {
         this.jQuery.hideModal("editworkflowModal");
-        this.router.navigate(['/dashboard'])
-      }, error => {
-        alert("Error!!!")
+        this.router.navigate(['/edit', 'product', this.product.id, 'workflows'])
+      }, e => {
+        if (e.status == 409) {
+          this.editWorkflowForm.setErrors({msg: "Unable to delete this test suite until all existing test cases and test steps are deleted."})
+        } else {
+          this.editWorkflowForm.setErrors({msg: "An unknown error has occured."})
+        }
+        this.deleteClicked = false
       }
     )
   }
